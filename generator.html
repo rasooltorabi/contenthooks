@@ -86,6 +86,35 @@
 </div>
 
 <script>
+  const historyKey = "contenthooks_history";
+
+function saveToHistory(hooksHtml) {
+  let history = JSON.parse(localStorage.getItem(historyKey) || "[]");
+  history.unshift({
+    date: new Date().toLocaleString(),
+    content: hooksHtml
+  });
+  history = history.slice(0, 10); // فقط 10 تای آخر
+  localStorage.setItem(historyKey, JSON.stringify(history));
+  renderHistory();
+}
+
+function renderHistory() {
+  const history = JSON.parse(localStorage.getItem(historyKey) || "[]");
+  const box = document.getElementById("historyList");
+
+  if (!history.length) {
+    box.innerHTML = `<div style="opacity:.5">No saved hooks yet.</div>`;
+    return;
+  }
+
+  box.innerHTML = history.map(item => `
+    <div style="margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid #222">
+      <div style="font-size:12px;opacity:.5">${item.date}</div>
+      <div>${item.content}</div>
+    </div>
+  `).join("");
+}
 /* ===== Config ===== */
 const MAX_USES = 10;
 const usageKey = "contenthooks_usage";
