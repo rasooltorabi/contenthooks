@@ -4,39 +4,85 @@
   <meta charset="UTF-8">
   <title>Hook Generator | ContentHooks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      margin: 0;
+      background: #0B0F14;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      color: #00ff9c;
+      font-size: 38px;
+    }
+
+    p {
+      opacity: 0.8;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #00ff9c;
+      border: none;
+      padding: 14px 26px;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .hooks {
+      margin-top: 30px;
+      font-size: 18px;
+      line-height: 1.6;
+    }
+
+    .upgrade {
+      margin-top: 40px;
+      opacity: 0.6;
+      font-size: 14px;
+    }
+  </style>
 </head>
-<body style="background:#0B0F14;color:#fff;font-family:Arial;text-align:center;padding:40px">
 
-<h1 style="color:#00ff9c">Hook Generator</h1>
-<p>Click to generate scroll-stopping hooks</p>
+<body>
 
-<button onclick="generateHooks()" style="background:#00ff9c;border:none;padding:15px 25px;border-radius:8px;cursor:pointer">
-Generate Hooks
-</button>
+<h1>Hook Generator</h1>
+<p>Generate scroll-stopping hooks for your content</p>
 
-<div id="output" style="margin-top:30px;font-size:18px"></div>
+<button onclick="generateHooks()">Generate Hooks</button>
+
+<div class="hooks" id="output"></div>
+
+<div class="upgrade">
+  Free trial: 1 day • Upgrade to unlock unlimited hooks
+</div>
 
 <script>
 const hooks = [
   "Nobody talks about this, but…",
-  "Stop scrolling if you want more views.",
-  "This is why your videos don’t go viral.",
-  "You’re doing this wrong.",
+  "Stop scrolling. This is important.",
+  "This is why your content isn’t growing.",
+  "You’re doing this completely wrong.",
   "Watch this before you post again.",
   "This changed everything for me.",
   "Don’t make this mistake.",
-  "If I started today, I’d do this.",
+  "If I had to start over, I’d do this.",
   "This works better than hashtags.",
-  "Here’s the real reason."
+  "Here’s the real reason nobody tells you."
 ];
 
 function generateHooks() {
-  let html = "";
+  let result = "";
   for (let i = 0; i < 5; i++) {
     const hook = hooks[Math.floor(Math.random() * hooks.length)];
-    html += "👉 " + hook + "<br><br>";
+    result += "👉 " + hook + "<br><br>";
   }
-  document.getElementById("output").innerHTML = html;
+  document.getElementById("output").innerHTML = result;
 }
 </script>
 
