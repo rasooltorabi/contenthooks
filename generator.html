@@ -66,6 +66,12 @@
   <option value="creator">🎥 Content Creator</option>
   <option value="business">📈 Business</option>
 </select>
+
+ <script>
+const MAX_USES = 10;
+const usageKey = "contenthooks_usage";
+</script>
+  
 <script>
 const TRIAL_HOURS = 24;
 const firstVisitKey = "contenthooks_first_visit";
@@ -83,34 +89,53 @@ function isTrialExpired() {
 <script>
 function generateHooks() {
   const btn = document.getElementById("generateBtn");
+  const output = document.getElementById("output");
+  const topic = document.getElementById("topic").value;
 
-  if (isTrialExpired()) {
+  let usage = parseInt(localStorage.getItem(usageKey) || "0");
+
+  if (isTrialExpired() || usage >= MAX_USES) {
     btn.disabled = true;
     btn.style.opacity = "0.5";
     btn.innerText = "Upgrade Required";
 
-    document.getElementById("output").innerHTML = `
-      ⛔ Your free trial has ended.<br><br>
+    output.innerHTML = `
+      ⛔ Trial limit reached.<br><br>
       <strong>Upgrade to unlock unlimited hooks</strong><br><br>
       👉 <a href="upgrade.html" style="color:#00ff9c">Upgrade now</a>
     `;
     return;
   }
 
-  const hooks = [
-    "Nobody talks about this, but…",
-    "Stop scrolling. This is important.",
-    "This is why your content isn’t growing.",
-    "You’re doing this completely wrong.",
-    "Watch this before you post again."
-  ];
+  const hooks = {
+    creator: [
+      "Nobody talks about this, but…",
+      "Stop scrolling. This will change how you post.",
+      "This is why your videos don’t go viral.",
+      "You’re posting wrong. Here’s why.",
+      "Watch this before your next upload."
+    ],
+    business: [
+      "This is why your business content isn’t converting.",
+      "You’re losing customers because of this.",
+      "Most brands get this completely wrong.",
+      "If I had to grow a business from zero, I’d do this.",
+      "This one thing doubled our conversions."
+    ]
+  };
 
   let result = "";
   for (let i = 0; i < 5; i++) {
-    result += "👉 " + hooks[Math.floor(Math.random() * hooks.length)] + "<br><br>";
+    const list = hooks[topic];
+    result += "👉 " + list[Math.floor(Math.random() * list.length)] + "<br><br>";
   }
 
-  document.getElementById("output").innerHTML = result;
+  usage++;
+  localStorage.setItem(usageKey, usage);
+
+  output.innerHTML = result + `<div style="opacity:.6;font-size:14px;margin-top:15px">
+    Trial uses left: ${MAX_USES - usage}
+  </div>`;
 }
 </script>
 
