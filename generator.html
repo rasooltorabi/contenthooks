@@ -48,7 +48,18 @@
     }
   </style>
 </head>
+<select id="platform" style="margin-top:15px;padding:10px;border-radius:8px">
+  <option value="tiktok">🎵 TikTok</option>
+  <option value="reels">📸 Instagram Reels</option>
+  <option value="shorts">▶️ YouTube Shorts</option>
+</select>
 
+<select id="tone" style="margin-top:15px;padding:10px;border-radius:8px">
+  <option value="curious">🤔 Curious</option>
+  <option value="aggressive">🔥 Aggressive</option>
+  <option value="emotional">❤️ Emotional</option>
+</select>
+  
 <body>
 
 <h1>Hook Generator</h1>
@@ -86,10 +97,14 @@ function isTrialExpired() {
 }
 
 /* ===== Main generator ===== */
+<script>
 function generateHooks() {
   const btn = document.getElementById("generateBtn");
   const output = document.getElementById("output");
+
   const topic = document.getElementById("topic").value;
+  const platform = document.getElementById("platform").value;
+  const tone = document.getElementById("tone").value;
 
   let usage = parseInt(localStorage.getItem(usageKey) || "0");
 
@@ -107,25 +122,51 @@ function generateHooks() {
   }
 
   const hooks = {
-    creator: [
-      "Nobody talks about this, but…",
-      "Stop scrolling. This will change how you post.",
-      "This is why your videos don’t go viral.",
-      "You’re posting wrong. Here’s why.",
-      "Watch this before your next upload."
-    ],
-    business: [
-      "This is why your business content isn’t converting.",
-      "You’re losing customers because of this.",
-      "Most brands get this completely wrong.",
-      "If I had to grow a business from zero, I’d do this.",
-      "This one thing doubled our conversions."
-    ]
+    creator: {
+      tiktok: {
+        curious: [
+          "Nobody talks about this on TikTok, but…",
+          "I almost didn’t post this…",
+          "This changed how my videos perform."
+        ],
+        aggressive: [
+          "Stop posting like this.",
+          "Your TikToks aren’t failing by accident.",
+          "This is why you’re stuck at 1k views."
+        ],
+        emotional: [
+          "I wish someone told me this earlier.",
+          "This hurt to learn.",
+          "I almost quit before this worked."
+        ]
+      }
+    },
+    business: {
+      reels: {
+        curious: [
+          "Most brands ignore this.",
+          "This tiny change boosted conversions.",
+          "Almost nobody does this right."
+        ],
+        aggressive: [
+          "Your content is costing you money.",
+          "This is killing your sales.",
+          "Stop wasting ad budget like this."
+        ],
+        emotional: [
+          "We struggled for months before this.",
+          "This mistake nearly ended our business.",
+          "I didn’t believe this would work."
+        ]
+      }
+    }
   };
 
-  let result = "";
-  const list = hooks[topic];
+  const list =
+    hooks[topic]?.[platform]?.[tone] ||
+    ["This hook is about to change your content."];
 
+  let result = "";
   for (let i = 0; i < 5; i++) {
     result += "👉 " + list[Math.floor(Math.random() * list.length)] + "<br><br>";
   }
