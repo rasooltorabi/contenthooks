@@ -41,6 +41,26 @@
       opacity:.6;
       font-size:14px;
     }
+    #history {
+      margin-top:50px;
+      max-width:600px;
+      margin-inline:auto;
+      text-align:left;
+    }
+    #history h3 {
+      color:#00ff9c;
+      margin-bottom:10px;
+    }
+    .history-item {
+      margin-bottom:20px;
+      padding-bottom:15px;
+      border-bottom:1px solid #222;
+    }
+    .history-date {
+      font-size:12px;
+      opacity:.5;
+      margin-bottom:6px;
+    }
   </style>
 </head>
 
@@ -53,7 +73,6 @@
   <option value="creator">🎥 Content Creator</option>
   <option value="business">📈 Business</option>
 </select>
-
 <br>
 
 <select id="platform">
@@ -61,7 +80,6 @@
   <option value="reels">📸 Instagram Reels</option>
   <option value="shorts">▶️ YouTube Shorts</option>
 </select>
-
 <br>
 
 <select id="tone">
@@ -69,32 +87,48 @@
   <option value="aggressive">🔥 Aggressive</option>
   <option value="emotional">❤️ Emotional</option>
 </select>
-
 <br>
 
 <button id="generateBtn" onclick="generateHooks()">Generate Hooks</button>
 
 <div class="hooks" id="output"></div>
 
-<div id="history" style="margin-top:40px;text-align:left;max-width:600px;margin-inline:auto">
-  <h3 style="color:#00ff9c">Saved Hooks</h3>
-  <div id="historyList" style="font-size:15px;line-height:1.6"></div>
-</div>
-  
 <div class="upgrade">
   Free trial: 1 day • Upgrade to unlock unlimited hooks
 </div>
 
-<script>
-  const historyKey = "contenthooks_history";
+<div id="history">
+  <h3>Saved Hooks</h3>
+  <div id="historyList"></div>
+</div>
 
-function saveToHistory(hooksHtml) {
+<script>
+/* ===== Config ===== */
+const MAX_USES = 10;
+const TRIAL_HOURS = 24;
+const usageKey = "contenthooks_usage";
+const firstVisitKey = "contenthooks_first_visit";
+const historyKey = "contenthooks_history";
+
+/* ===== Trial Time ===== */
+function isTrialExpired() {
+  const firstVisit = localStorage.getItem(firstVisitKey);
+  if (!firstVisit) {
+    localStorage.setItem(firstVisitKey, Date.now());
+    return false;
+  }
+  const hoursPassed = (Date.now() - firstVisit) / (1000 * 60 * 60);
+  return hoursPassed > TRIAL_HOURS;
+}
+
+/* ===== History ===== */
+function saveToHistory(content) {
   let history = JSON.parse(localStorage.getItem(historyKey) || "[]");
   history.unshift({
     date: new Date().toLocaleString(),
-    content: hooksHtml
+    content
   });
-  history = history.slice(0, 10); // فقط 10 تای آخر
+  history = history.slice(0, 10);
   localStorage.setItem(historyKey, JSON.stringify(history));
   renderHistory();
 }
@@ -109,27 +143,11 @@ function renderHistory() {
   }
 
   box.innerHTML = history.map(item => `
-    <div style="margin-bottom:20px;padding-bottom:15px;border-bottom:1px solid #222">
-      <div style="font-size:12px;opacity:.5">${item.date}</div>
+    <div class="history-item">
+      <div class="history-date">${item.date}</div>
       <div>${item.content}</div>
     </div>
   `).join("");
-}
-/* ===== Config ===== */
-const MAX_USES = 10;
-const usageKey = "contenthooks_usage";
-const TRIAL_HOURS = 24;
-const firstVisitKey = "contenthooks_first_visit";
-
-/* ===== Trial time ===== */
-function isTrialExpired() {
-  const firstVisit = localStorage.getItem(firstVisitKey);
-  if (!firstVisit) {
-    localStorage.setItem(firstVisitKey, Date.now());
-    return false;
-  }
-  const hoursPassed = (Date.now() - firstVisit) / (1000 * 60 * 60);
-  return hoursPassed > TRIAL_HOURS;
 }
 
 /* ===== Generator ===== */
@@ -214,7 +232,12 @@ function generateHooks() {
       Trial uses left: ${MAX_USES - usage}
     </div>
   `;
+
+  saveToHistory(result);
 }
+
+/* Init */
+renderHistory();
 </script>
 
 </body>
