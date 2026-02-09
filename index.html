@@ -1,110 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ContentHooks – Viral Hook Generator for Creators & Businesses</title>
+<meta charset="UTF-8">
+<title>ContentHooks – Viral Hook Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="description" content="Generate scroll-stopping hooks for TikTok, Reels & Shorts. Free 1-day trial. No credit card required.">
-  <meta name="keywords" content="hook generator, viral hooks, tiktok hooks, instagram reels hooks, content ideas">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <style>
-    body {
-      margin: 0;
-      background: #0B0F14;
-      color: #ffffff;
-      font-family: Arial, sans-serif;
-    }
-    header {
-      padding: 80px 20px;
-      text-align: center;
-    }
-    h1 {
-      font-size: 44px;
-      color: #00ff9c;
-    }
-    p {
-      font-size: 18px;
-      opacity: 0.85;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-    .cta {
-      display: inline-block;
-      margin-top: 30px;
-      background: #00ff9c;
-      color: #000;
-      padding: 16px 34px;
-      border-radius: 12px;
-      font-weight: bold;
-      text-decoration: none;
-    }
-    section {
-      padding: 60px 20px;
-      max-width: 900px;
-      margin: auto;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-    .box {
-      background: #111827;
-      padding: 25px;
-      border-radius: 16px;
-    }
-    footer {
-      text-align: center;
-      padding: 40px;
-      font-size: 14px;
-      opacity: 0.6;
-    }
-  </style>
+<style>
+body {
+  margin:0;
+  background:#0B0F14;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  text-align:center;
+  padding:40px 20px;
+}
+h1 { color:#00ff9c }
+input,select,button {
+  padding:12px;
+  border-radius:8px;
+  border:none;
+  margin-top:12px;
+}
+button {
+  background:#00ff9c;
+  font-weight:bold;
+  cursor:pointer;
+}
+.hidden { display:none }
+.hooks { margin-top:30px; font-size:18px }
+.upgrade {
+  margin-top:40px;
+  opacity:.7;
+}
+.paywall {
+  max-width:420px;
+  margin:60px auto;
+  padding:30px;
+  border:1px solid #222;
+  border-radius:12px;
+}
+.price {
+  font-size:32px;
+  color:#00ff9c;
+}
+.history {
+  max-width:600px;
+  margin:50px auto;
+  text-align:left;
+}
+.history h3 { color:#00ff9c }
+.history-item {
+  border-bottom:1px solid #222;
+  padding:12px 0;
+}
+</style>
 </head>
 
 <body>
 
-<header>
-  <h1>Hooks That Stop the Scroll.</h1>
-  <p>
-    Generate viral hooks for TikTok, Instagram Reels & YouTube Shorts in seconds.
-    Built for creators and businesses.
-  </p>
-  <a href="generator.html" class="cta">Start Free Trial</a>
-</header>
+<h1>ContentHooks</h1>
+<p>Hooks that stop the scroll.</p>
 
-<section>
-  <h2>Why ContentHooks?</h2>
-  <div class="grid">
-    <div class="box">🚀 Increase watch time instantly</div>
-    <div class="box">🎯 Hooks tailored for creators & businesses</div>
-    <div class="box">⚡ Generate ideas in seconds</div>
-    <div class="box">💳 No credit card required</div>
-  </div>
-</section>
+<!-- EMAIL GATE -->
+<div id="emailGate">
+  <input id="emailInput" placeholder="Enter your email to start" />
+  <br>
+  <button onclick="startTrial()">Start Free Trial</button>
+</div>
 
-<section>
-  <h2>How it works</h2>
-  <div class="grid">
-    <div class="box">1️⃣ Choose your content type</div>
-    <div class="box">2️⃣ Generate viral hooks</div>
-    <div class="box">3️⃣ Post & grow faster</div>
-  </div>
-</section>
+<!-- APP -->
+<div id="app" class="hidden">
 
-<section>
-  <h2>Free Trial</h2>
-  <p>
-    Try ContentHooks free for 24 hours.  
-    Upgrade anytime with USDT (TRC20).
-  </p>
-  <a href="generator.html" class="cta">Generate Hooks Now</a>
-</section>
+<select id="topic">
+  <option value="creator">🎥 Creator</option>
+  <option value="business">📈 Business</option>
+</select><br>
 
-<footer>
-  © 2026 ContentHooks • Contact: rasooltorabi81@gmail.com
-</footer>
+<select id="tone">
+  <option value="curious">🤔 Curious</option>
+  <option value="aggressive">🔥 Aggressive</option>
+  <option value="emotional">❤️ Emotional</option>
+</select><br>
+
+<button onclick="generate()">Generate Hooks</button>
+
+<div class="hooks" id="output"></div>
+
+<div class="history hidden" id="historyBox">
+  <h3>Saved Hooks (PRO)</h3>
+  <div id="history"></div>
+</div>
+
+</div>
+
+<!-- PAYWALL -->
+<div id="paywall" class="paywall hidden">
+  <h2>Upgrade to Pro</h2>
+  <p>Unlimited hooks. Saved history. Lifetime access.</p>
+  <div class="price">$9 one-time</div><br>
+  <button onclick="goToCheckout()">Upgrade Now</button>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const TRIAL_HOURS = 24;
+const MAX_USES = 10;
+
+const emailKey = "ch_email";
+const trialKey = "ch_trial_start";
+const usageKey = "ch_usage";
+const proKey = "ch_pro";
+const historyKey = "ch_history";
+
+/* ===== INIT ===== */
+(function init(){
+  if(localStorage.getItem(proKey)==="true"){
+    showApp(true);
+    return;
+  }
+  if(localStorage.getItem(emailKey)){
+    checkTrial();
+  }
+})();
+
+/* ===== EMAIL ===== */
+function startTrial(){
+  const email = emailInput.value;
+  if(!email.includes("@")) return alert("Enter valid email");
+  localStorage.setItem(emailKey,email);
+  localStorage.setItem(trialKey,Date.now());
+  showApp(false);
+}
+
+/* ===== TRIAL ===== */
+function checkTrial(){
+  const start = localStorage.getItem(trialKey);
+  const hours = (Date.now()-start)/(1000*60*60);
+  if(hours > TRIAL_HOURS){
+    showPaywall();
+  } else {
+    showApp(false);
+  }
+}
+
+/* ===== UI ===== */
+function showApp(isPro){
+  emailGate.classList.add("hidden");
+  paywall.classList.add("hidden");
+  app.classList.remove("hidden");
+  if(isPro) historyBox.classList.remove("hidden");
+}
+
+function showPaywall(){
+  emailGate.classList.add("hidden");
+  app.classList.add("hidden");
+  paywall.classList.remove("hidden");
+}
+
+/* ===== GENERATOR ===== */
+function generate(){
+  let usage = parseInt(localStorage.getItem(usageKey)||"0");
+  if(usage >= MAX_USES){
+    showPaywall(); return;
+  }
+
+  const hooks = [
+    "Nobody talks about this…",
+    "This changes everything.",
+    "Stop scrolling.",
+    "I wish I knew this sooner.",
+    "This is why nothing works."
+  ];
+
+  let result="";
+  for(let i=0;i<5;i++){
+    result += "👉 "+hooks[Math.floor(Math.random()*hooks.length)]+"<br><br>";
+  }
+
+  output.innerHTML=result;
+  usage++;
+  localStorage.setItem(usageKey,usage);
+
+  saveHistory(result);
+}
+
+/* ===== HISTORY (PRO) ===== */
+function saveHistory(content){
+  let h = JSON.parse(localStorage.getItem(historyKey)||"[]");
+  h.unshift(content);
+  localStorage.setItem(historyKey,JSON.stringify(h));
+  renderHistory();
+}
+
+function renderHistory(){
+  if(localStorage.getItem(proKey)!=="true") return;
+  historyBox.classList.remove("hidden");
+  history.innerHTML = JSON.parse(localStorage.getItem(historyKey)||"[]")
+    .map(x=>`<div class="history-item">${x}</div>`).join("");
+}
+
+/* ===== CHECKOUT ===== */
+function goToCheckout(){
+  // Stripe link here
+  localStorage.setItem(proKey,"true");
+  showApp(true);
+  renderHistory();
+  alert("Pro unlocked (demo)");
+}
+</script>
 
 </body>
 </html>
