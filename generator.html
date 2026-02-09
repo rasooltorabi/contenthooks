@@ -63,25 +63,49 @@
 </div>
 
 <script>
-const hooks = [
-  "Nobody talks about this, but…",
-  "Stop scrolling. This is important.",
-  "This is why your content isn’t growing.",
-  "You’re doing this completely wrong.",
-  "Watch this before you post again.",
-  "This changed everything for me.",
-  "Don’t make this mistake.",
-  "If I had to start over, I’d do this.",
-  "This works better than hashtags.",
-  "Here’s the real reason nobody tells you."
-];
+const TRIAL_HOURS = 24;
+const firstVisitKey = "contenthooks_first_visit";
+
+function isTrialExpired() {
+  const firstVisit = localStorage.getItem(firstVisitKey);
+  if (!firstVisit) {
+    localStorage.setItem(firstVisitKey, Date.now());
+    return false;
+  }
+  const hoursPassed = (Date.now() - firstVisit) / (1000 * 60 * 60);
+  return hoursPassed > TRIAL_HOURS;
+}
 
 function generateHooks() {
+  if (isTrialExpired()) {
+    document.getElementById("output").innerHTML = `
+      ⛔ Your free trial has ended.<br><br>
+      <strong>Upgrade to unlock unlimited hooks.</strong><br><br>
+      💎 Pay with USDT (TRC20)<br>
+      📩 Contact: rasooltorabi81@gmail.com
+    `;
+    return;
+  }
+
+  const hooks = [
+    "Nobody talks about this, but…",
+    "Stop scrolling. This is important.",
+    "This is why your content isn’t growing.",
+    "You’re doing this completely wrong.",
+    "Watch this before you post again.",
+    "This changed everything for me.",
+    "Don’t make this mistake.",
+    "If I had to start over, I’d do this.",
+    "This works better than hashtags.",
+    "Here’s the real reason nobody tells you."
+  ];
+
   let result = "";
   for (let i = 0; i < 5; i++) {
     const hook = hooks[Math.floor(Math.random() * hooks.length)];
     result += "👉 " + hook + "<br><br>";
   }
+
   document.getElementById("output").innerHTML = result;
 }
 </script>
