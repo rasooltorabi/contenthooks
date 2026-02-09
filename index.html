@@ -3,210 +3,170 @@
 <head>
 <meta charset="UTF-8">
 <title>ContentHooks – Viral Hook Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin:0;
   background:#0B0F14;
   color:#fff;
-  font-family:Arial,sans-serif;
+  font-family:Arial, sans-serif;
   text-align:center;
   padding:40px 20px;
 }
-h1 { color:#00ff9c }
-input,select,button {
-  padding:12px;
-  border-radius:8px;
-  border:none;
-  margin-top:12px;
-}
+h1 { color:#00ff9c; font-size:40px; }
+p { opacity:.8; }
 button {
   background:#00ff9c;
+  border:none;
+  padding:14px 26px;
+  border-radius:10px;
   font-weight:bold;
   cursor:pointer;
+  margin-top:20px;
 }
-.hidden { display:none }
-.hooks { margin-top:30px; font-size:18px }
-.upgrade {
-  margin-top:40px;
-  opacity:.7;
+select {
+  margin:10px;
+  padding:10px;
+  border-radius:8px;
 }
-.paywall {
-  max-width:420px;
-  margin:60px auto;
-  padding:30px;
-  border:1px solid #222;
-  border-radius:12px;
+.hooks {
+  margin-top:30px;
+  font-size:18px;
+  line-height:1.6;
 }
-.price {
-  font-size:32px;
-  color:#00ff9c;
+.box {
+  max-width:700px;
+  margin:40px auto;
 }
 .history {
-  max-width:600px;
-  margin:50px auto;
   text-align:left;
+  margin-top:40px;
 }
-.history h3 { color:#00ff9c }
+.history h3 { color:#00ff9c; }
 .history-item {
   border-bottom:1px solid #222;
-  padding:12px 0;
+  padding:10px 0;
+  font-size:15px;
+}
+.footer {
+  margin-top:50px;
+  font-size:13px;
+  opacity:.5;
 }
 </style>
 </head>
 
 <body>
 
-<h1>ContentHooks</h1>
-<p>Hooks that stop the scroll.</p>
+<h1>Hooks that stop the scroll.</h1>
+<p>Create viral hooks for TikTok, Reels & Shorts</p>
 
-<!-- EMAIL GATE -->
-<div id="emailGate">
-  <input id="emailInput" placeholder="Enter your email to start" />
-  <br>
-  <button onclick="startTrial()">Start Free Trial</button>
+<div>
+  <select id="platform">
+    <option value="tiktok">TikTok</option>
+    <option value="reels">Instagram Reels</option>
+    <option value="shorts">YouTube Shorts</option>
+  </select>
+
+  <select id="tone">
+    <option value="curious">Curious</option>
+    <option value="aggressive">Aggressive</option>
+    <option value="emotional">Emotional</option>
+  </select>
+
+  <select id="topic">
+    <option value="creator">Creator</option>
+    <option value="business">Business</option>
+  </select>
 </div>
 
-<!-- APP -->
-<div id="app" class="hidden">
+<button id="generateBtn" onclick="generateHooks()">Generate Hooks</button>
 
-<select id="topic">
-  <option value="creator">🎥 Creator</option>
-  <option value="business">📈 Business</option>
-</select><br>
+<div class="box">
+  <div id="output" class="hooks"></div>
 
-<select id="tone">
-  <option value="curious">🤔 Curious</option>
-  <option value="aggressive">🔥 Aggressive</option>
-  <option value="emotional">❤️ Emotional</option>
-</select><br>
-
-<button onclick="generate()">Generate Hooks</button>
-
-<div class="hooks" id="output"></div>
-
-<div class="history hidden" id="historyBox">
-  <h3>Saved Hooks (PRO)</h3>
-  <div id="history"></div>
+  <div class="history">
+    <h3>Saved Hooks</h3>
+    <div id="historyList"></div>
+  </div>
 </div>
 
-</div>
-
-<!-- PAYWALL -->
-<div id="paywall" class="paywall hidden">
-  <h2>Upgrade to Pro</h2>
-  <p>Unlimited hooks. Saved history. Lifetime access.</p>
-  <div class="price">$9 one-time</div><br>
-  <button onclick="goToCheckout()">Upgrade Now</button>
+<div class="footer">
+  Free trial • Upgrade with USDT (TRC20) • Contact: rasooltorabi81@gmail.com
 </div>
 
 <script>
-/* ===== CONFIG ===== */
-const TRIAL_HOURS = 24;
+/* CONFIG */
 const MAX_USES = 10;
-
-const emailKey = "ch_email";
-const trialKey = "ch_trial_start";
+const TRIAL_HOURS = 24;
 const usageKey = "ch_usage";
-const proKey = "ch_pro";
+const timeKey = "ch_time";
 const historyKey = "ch_history";
 
-/* ===== INIT ===== */
-(function init(){
-  if(localStorage.getItem(proKey)==="true"){
-    showApp(true);
+/* TRIAL */
+function isExpired() {
+  let t = localStorage.getItem(timeKey);
+  if (!t) {
+    localStorage.setItem(timeKey, Date.now());
+    return false;
+  }
+  return (Date.now() - t) / 36e5 > TRIAL_HOURS;
+}
+
+/* HISTORY */
+function saveHistory(html) {
+  let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
+  h.unshift({ date:new Date().toLocaleString(), html });
+  h = h.slice(0,5);
+  localStorage.setItem(historyKey, JSON.stringify(h));
+  renderHistory();
+}
+function renderHistory() {
+  let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
+  let box = document.getElementById("historyList");
+  box.innerHTML = h.length ? h.map(i =>
+    `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`
+  ).join("") : "<div style='opacity:.4'>No hooks yet</div>";
+}
+
+/* GENERATOR */
+function generateHooks() {
+  let usage = +localStorage.getItem(usageKey) || 0;
+  let out = document.getElementById("output");
+  let btn = document.getElementById("generateBtn");
+
+  if (isExpired() || usage >= MAX_USES) {
+    btn.disabled = true;
+    btn.innerText = "Upgrade Required";
+    out.innerHTML = `
+      ⛔ Trial ended<br><br>
+      💎 Unlock Pro Version<br>
+      Pay with USDT (TRC20)<br><br>
+      📩 rasooltorabi81@gmail.com
+    `;
     return;
-  }
-  if(localStorage.getItem(emailKey)){
-    checkTrial();
-  }
-})();
-
-/* ===== EMAIL ===== */
-function startTrial(){
-  const email = emailInput.value;
-  if(!email.includes("@")) return alert("Enter valid email");
-  localStorage.setItem(emailKey,email);
-  localStorage.setItem(trialKey,Date.now());
-  showApp(false);
-}
-
-/* ===== TRIAL ===== */
-function checkTrial(){
-  const start = localStorage.getItem(trialKey);
-  const hours = (Date.now()-start)/(1000*60*60);
-  if(hours > TRIAL_HOURS){
-    showPaywall();
-  } else {
-    showApp(false);
-  }
-}
-
-/* ===== UI ===== */
-function showApp(isPro){
-  emailGate.classList.add("hidden");
-  paywall.classList.add("hidden");
-  app.classList.remove("hidden");
-  if(isPro) historyBox.classList.remove("hidden");
-}
-
-function showPaywall(){
-  emailGate.classList.add("hidden");
-  app.classList.add("hidden");
-  paywall.classList.remove("hidden");
-}
-
-/* ===== GENERATOR ===== */
-function generate(){
-  let usage = parseInt(localStorage.getItem(usageKey)||"0");
-  if(usage >= MAX_USES){
-    showPaywall(); return;
   }
 
   const hooks = [
-    "Nobody talks about this…",
-    "This changes everything.",
-    "Stop scrolling.",
-    "I wish I knew this sooner.",
-    "This is why nothing works."
+    "Nobody talks about this, but…",
+    "Stop scrolling. This is important.",
+    "This mistake is killing your growth.",
+    "I wish I knew this earlier.",
+    "This changed everything for me."
   ];
 
-  let result="";
-  for(let i=0;i<5;i++){
-    result += "👉 "+hooks[Math.floor(Math.random()*hooks.length)]+"<br><br>";
-  }
+  let res = "";
+  for (let i=0;i<5;i++)
+    res += "👉 " + hooks[Math.floor(Math.random()*hooks.length)] + "<br><br>";
 
-  output.innerHTML=result;
   usage++;
-  localStorage.setItem(usageKey,usage);
-
-  saveHistory(result);
+  localStorage.setItem(usageKey, usage);
+  out.innerHTML = res + `<div style="opacity:.5">Uses left: ${MAX_USES-usage}</div>`;
+  saveHistory(res);
 }
 
-/* ===== HISTORY (PRO) ===== */
-function saveHistory(content){
-  let h = JSON.parse(localStorage.getItem(historyKey)||"[]");
-  h.unshift(content);
-  localStorage.setItem(historyKey,JSON.stringify(h));
-  renderHistory();
-}
-
-function renderHistory(){
-  if(localStorage.getItem(proKey)!=="true") return;
-  historyBox.classList.remove("hidden");
-  history.innerHTML = JSON.parse(localStorage.getItem(historyKey)||"[]")
-    .map(x=>`<div class="history-item">${x}</div>`).join("");
-}
-
-/* ===== CHECKOUT ===== */
-function goToCheckout(){
-  // Stripe link here
-  localStorage.setItem(proKey,"true");
-  showApp(true);
-  renderHistory();
-  alert("Pro unlocked (demo)");
-}
+renderHistory();
 </script>
 
 </body>
