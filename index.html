@@ -23,21 +23,15 @@ button {
   border-radius:10px;
   font-weight:bold;
   cursor:pointer;
+  margin-top:10px;
 }
-select {
+select,input {
   margin:8px;
   padding:10px;
   border-radius:8px;
 }
-.container {
-  max-width:800px;
-  margin:0 auto;
-}
-.hooks {
-  margin-top:30px;
-  font-size:18px;
-  line-height:1.6;
-}
+.container { max-width:800px; margin:0 auto; }
+.hooks { margin-top:30px; font-size:18px; line-height:1.6; }
 .card {
   border:1px solid #222;
   border-radius:16px;
@@ -76,20 +70,20 @@ select {
 
 <div>
   <select id="platform">
-    <option value="TikTok">TikTok</option>
-    <option value="Reels">Instagram Reels</option>
-    <option value="Shorts">YouTube Shorts</option>
+    <option>TikTok</option>
+    <option>Instagram Reels</option>
+    <option>YouTube Shorts</option>
   </select>
 
   <select id="tone">
-    <option value="Curious">Curious</option>
-    <option value="Aggressive">Aggressive</option>
-    <option value="Emotional">Emotional</option>
+    <option>Curious</option>
+    <option>Aggressive</option>
+    <option>Emotional</option>
   </select>
 
   <select id="topic">
-    <option value="Creator">Creator</option>
-    <option value="Business">Business</option>
+    <option>Creator</option>
+    <option>Business</option>
   </select>
 </div>
 
@@ -110,25 +104,24 @@ select {
     <h3>Starter</h3>
     <h2>$0</h2>
     <p>10 hooks</p>
-    <p>No history</p>
   </div>
 
   <div class="card" style="border:2px solid #00ff9c">
-    <h3>Pro Monthly</h3>
-    <h2>$9</h2>
-    <p>Unlimited hooks</p>
-    <p>Save history</p>
-    <p>All platforms</p>
+    <h3>Pro</h3>
+    <h2>$29</h2>
+    <p>Unlimited</p>
+    <p>History</p>
+    <p>Lifetime</p>
     <button onclick="showPay()">Upgrade</button>
   </div>
+</div>
 
-  <div class="card">
-    <h3>Lifetime</h3>
-    <h2>$29</h2>
-    <p>Pay once</p>
-    <p>Forever access</p>
-    <button onclick="showPay()">Get Lifetime</button>
-  </div>
+<!-- UNLOCK -->
+<div style="margin-top:40px">
+  <p style="opacity:.6">Already paid?</p>
+  <input id="unlockCode" placeholder="Enter unlock code">
+  <br>
+  <button onclick="unlockPro()">Unlock Pro</button>
 </div>
 
 <div class="footer">
@@ -138,53 +131,46 @@ select {
 <script>
 /* CONFIG */
 const MAX_USES = 10;
-const TRIAL_HOURS = 24;
 const usageKey = "ch_usage";
-const timeKey = "ch_time";
 const historyKey = "ch_history";
+const proKey = "ch_pro";
+const VALID_CODES = ["CH-PRO-2026","FOUNDER-ACCESS","LIFETIME-OK"];
 
-/* TRIAL CHECK */
-function isExpired() {
-  let t = localStorage.getItem(timeKey);
-  if (!t) {
-    localStorage.setItem(timeKey, Date.now());
-    return false;
-  }
-  return (Date.now() - t) / 36e5 > TRIAL_HOURS;
+/* PRO CHECK */
+function isPro() {
+  return localStorage.getItem(proKey) === "true";
 }
 
 /* HISTORY */
 function saveHistory(html) {
+  if (!isPro()) return;
   let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
   h.unshift({ date:new Date().toLocaleString(), html });
   h = h.slice(0,5);
   localStorage.setItem(historyKey, JSON.stringify(h));
   renderHistory();
 }
-
 function renderHistory() {
+  if (!isPro()) {
+    document.getElementById("historyList").innerHTML =
+      "<div style='opacity:.4'>Upgrade to save history</div>";
+    return;
+  }
   let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
-  let box = document.getElementById("historyList");
-  box.innerHTML = h.length
-    ? h.map(i => `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`).join("")
-    : "<div style='opacity:.4'>No hooks yet</div>";
+  document.getElementById("historyList").innerHTML =
+    h.map(i => `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`).join("");
 }
 
 /* GENERATOR */
 function generateHooks() {
-  let usage = +localStorage.getItem(usageKey) || 0;
   let out = document.getElementById("output");
   let btn = document.getElementById("generateBtn");
 
-  if (isExpired() || usage >= MAX_USES) {
+  let usage = +localStorage.getItem(usageKey) || 0;
+  if (!isPro() && usage >= MAX_USES) {
     btn.disabled = true;
     btn.innerText = "Upgrade Required";
-    out.innerHTML = `
-      ⛔ Trial ended<br><br>
-      <strong>Unlock Pro</strong><br>
-      💎 USDT (TRC20)<br>
-      📩 rasooltorabi81@gmail.com
-    `;
+    out.innerHTML = "⛔ Free limit reached";
     return;
   }
 
@@ -200,19 +186,36 @@ function generateHooks() {
   for (let i=0;i<5;i++)
     res += "👉 " + hooks[Math.floor(Math.random()*hooks.length)] + "<br><br>";
 
-  usage++;
-  localStorage.setItem(usageKey, usage);
-  out.innerHTML = res + `<div style="opacity:.5">Uses left: ${MAX_USES-usage}</div>`;
+  if (!isPro()) {
+    usage++;
+    localStorage.setItem(usageKey, usage);
+    res += `<div style="opacity:.5">Uses left: ${MAX_USES-usage}</div>`;
+  }
+
+  out.innerHTML = res;
   saveHistory(res);
 }
 
 /* PAY */
 function showPay() {
   alert(
-    "Upgrade to ContentHooks Pro 🚀\n\n" +
-    "💎 Pay with USDT (TRC20)\n\n" +
-    "📩 Contact: rasooltorabi81@gmail.com"
+    "Upgrade to PRO 🚀\n\n" +
+    "💎 USDT (TRC20)\n\n" +
+    "📩 Contact: rasooltorabi81@gmail.com\n\n" +
+    "You will receive an unlock code."
   );
+}
+
+/* UNLOCK */
+function unlockPro() {
+  const code = document.getElementById("unlockCode").value.trim();
+  if (VALID_CODES.includes(code)) {
+    localStorage.setItem(proKey, "true");
+    alert("✅ Pro unlocked. Enjoy!");
+    location.reload();
+  } else {
+    alert("❌ Invalid code");
+  }
 }
 
 renderHistory();
