@@ -67,15 +67,14 @@
   <option value="business">📈 Business</option>
 </select>
 
- <script>
+<script>
+/* ===== Trial config ===== */
 const MAX_USES = 10;
 const usageKey = "contenthooks_usage";
-</script>
-  
-<script>
 const TRIAL_HOURS = 24;
 const firstVisitKey = "contenthooks_first_visit";
 
+/* ===== Trial time check ===== */
 function isTrialExpired() {
   const firstVisit = localStorage.getItem(firstVisitKey);
   if (!firstVisit) {
@@ -86,7 +85,7 @@ function isTrialExpired() {
   return hoursPassed > TRIAL_HOURS;
 }
 
-<script>
+/* ===== Main generator ===== */
 function generateHooks() {
   const btn = document.getElementById("generateBtn");
   const output = document.getElementById("output");
@@ -125,17 +124,20 @@ function generateHooks() {
   };
 
   let result = "";
+  const list = hooks[topic];
+
   for (let i = 0; i < 5; i++) {
-    const list = hooks[topic];
     result += "👉 " + list[Math.floor(Math.random() * list.length)] + "<br><br>";
   }
 
   usage++;
   localStorage.setItem(usageKey, usage);
 
-  output.innerHTML = result + `<div style="opacity:.6;font-size:14px;margin-top:15px">
-    Trial uses left: ${MAX_USES - usage}
-  </div>`;
+  output.innerHTML = result + `
+    <div style="opacity:.6;font-size:14px;margin-top:15px">
+      Trial uses left: ${MAX_USES - usage}
+    </div>
+  `;
 }
 </script>
 
