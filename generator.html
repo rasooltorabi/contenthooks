@@ -54,7 +54,7 @@
 <h1>Hook Generator</h1>
 <p>Generate scroll-stopping hooks for your content</p>
 
-<button onclick="generateHooks()">Generate Hooks</button>
+<button id="generateBtn" onclick="generateHooks()">Generate Hooks</button>
 
 <div class="hooks" id="output"></div>
 
@@ -62,6 +62,10 @@
   Free trial: 1 day • Upgrade to unlock unlimited hooks
 </div>
 
+<select id="topic" style="margin-top:20px;padding:10px;border-radius:8px">
+  <option value="creator">🎥 Content Creator</option>
+  <option value="business">📈 Business</option>
+</select>
 <script>
 const TRIAL_HOURS = 24;
 const firstVisitKey = "contenthooks_first_visit";
@@ -76,13 +80,19 @@ function isTrialExpired() {
   return hoursPassed > TRIAL_HOURS;
 }
 
+<script>
 function generateHooks() {
+  const btn = document.getElementById("generateBtn");
+
   if (isTrialExpired()) {
+    btn.disabled = true;
+    btn.style.opacity = "0.5";
+    btn.innerText = "Upgrade Required";
+
     document.getElementById("output").innerHTML = `
       ⛔ Your free trial has ended.<br><br>
-      <strong>Upgrade to unlock unlimited hooks.</strong><br><br>
-      💎 Pay with USDT (TRC20)<br>
-      📩 Contact: rasooltorabi81@gmail.com
+      <strong>Upgrade to unlock unlimited hooks</strong><br><br>
+      👉 <a href="upgrade.html" style="color:#00ff9c">Upgrade now</a>
     `;
     return;
   }
@@ -92,18 +102,12 @@ function generateHooks() {
     "Stop scrolling. This is important.",
     "This is why your content isn’t growing.",
     "You’re doing this completely wrong.",
-    "Watch this before you post again.",
-    "This changed everything for me.",
-    "Don’t make this mistake.",
-    "If I had to start over, I’d do this.",
-    "This works better than hashtags.",
-    "Here’s the real reason nobody tells you."
+    "Watch this before you post again."
   ];
 
   let result = "";
   for (let i = 0; i < 5; i++) {
-    const hook = hooks[Math.floor(Math.random() * hooks.length)];
-    result += "👉 " + hook + "<br><br>";
+    result += "👉 " + hooks[Math.floor(Math.random() * hooks.length)] + "<br><br>";
   }
 
   document.getElementById("output").innerHTML = result;
