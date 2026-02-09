@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Upgrade | ContentHooks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin:0;
+  background:#0B0F14;
+  color:#fff;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
+.box {
+  max-width:420px;
+  background:#111827;
+  padding:30px;
+  border-radius:16px;
+}
+h1 { color:#00ff9c }
+.wallet {
+  background:#0B0F14;
+  padding:12px;
+  border-radius:8px;
+  word-break:break-all;
+  margin:15px 0;
+  font-size:14px;
+}
+button {
+  background:#00ff9c;
+  border:none;
+  padding:14px 24px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="box">
+  <h1>Upgrade to Pro</h1>
+  <p>Unlimited hooks • Lifetime access</p>
+
+  <p><strong>Price:</strong> 19 USDT (TRC20)</p>
+
+  <div class="wallet" id="wallet">
+    YOUR_TRC20_WALLET_ADDRESS
+  </div>
+
+  <button onclick="copyWallet()">Copy Wallet Address</button>
+
+  <p style="margin-top:20px;font-size:14px;opacity:.7">
+    After payment, email your TXID to:<br>
+    <strong>rasooltorabi81@gmail.com</strong>
+  </p>
+</div>
+
+<script>
+function copyWallet() {
+  const text = document.getElementById("wallet").innerText;
+  navigator.clipboard.writeText(text);
+  alert("Wallet address copied");
+}
+</script>
+</body>
+</html>
