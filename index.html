@@ -14,7 +14,7 @@ body {
   text-align:center;
   padding:40px 20px;
 }
-h1 { color:#00ff9c; font-size:40px; }
+h1 { color:#00ff9c; font-size:42px; }
 p { opacity:.8; }
 button {
   background:#00ff9c;
@@ -23,34 +23,46 @@ button {
   border-radius:10px;
   font-weight:bold;
   cursor:pointer;
-  margin-top:20px;
 }
 select {
-  margin:10px;
+  margin:8px;
   padding:10px;
   border-radius:8px;
+}
+.container {
+  max-width:800px;
+  margin:0 auto;
 }
 .hooks {
   margin-top:30px;
   font-size:18px;
   line-height:1.6;
 }
-.box {
-  max-width:700px;
-  margin:40px auto;
+.card {
+  border:1px solid #222;
+  border-radius:16px;
+  padding:25px;
+  margin:15px;
+  width:240px;
+}
+.pricing {
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-top:50px;
 }
 .history {
   text-align:left;
-  margin-top:40px;
+  margin-top:50px;
 }
 .history h3 { color:#00ff9c; }
 .history-item {
   border-bottom:1px solid #222;
-  padding:10px 0;
+  padding:12px 0;
   font-size:15px;
 }
 .footer {
-  margin-top:50px;
+  margin-top:60px;
   font-size:13px;
   opacity:.5;
 }
@@ -64,26 +76,26 @@ select {
 
 <div>
   <select id="platform">
-    <option value="tiktok">TikTok</option>
-    <option value="reels">Instagram Reels</option>
-    <option value="shorts">YouTube Shorts</option>
+    <option value="TikTok">TikTok</option>
+    <option value="Reels">Instagram Reels</option>
+    <option value="Shorts">YouTube Shorts</option>
   </select>
 
   <select id="tone">
-    <option value="curious">Curious</option>
-    <option value="aggressive">Aggressive</option>
-    <option value="emotional">Emotional</option>
+    <option value="Curious">Curious</option>
+    <option value="Aggressive">Aggressive</option>
+    <option value="Emotional">Emotional</option>
   </select>
 
   <select id="topic">
-    <option value="creator">Creator</option>
-    <option value="business">Business</option>
+    <option value="Creator">Creator</option>
+    <option value="Business">Business</option>
   </select>
 </div>
 
 <button id="generateBtn" onclick="generateHooks()">Generate Hooks</button>
 
-<div class="box">
+<div class="container">
   <div id="output" class="hooks"></div>
 
   <div class="history">
@@ -92,8 +104,35 @@ select {
   </div>
 </div>
 
+<!-- PRICING -->
+<div class="pricing">
+  <div class="card">
+    <h3>Starter</h3>
+    <h2>$0</h2>
+    <p>10 hooks</p>
+    <p>No history</p>
+  </div>
+
+  <div class="card" style="border:2px solid #00ff9c">
+    <h3>Pro Monthly</h3>
+    <h2>$9</h2>
+    <p>Unlimited hooks</p>
+    <p>Save history</p>
+    <p>All platforms</p>
+    <button onclick="showPay()">Upgrade</button>
+  </div>
+
+  <div class="card">
+    <h3>Lifetime</h3>
+    <h2>$29</h2>
+    <p>Pay once</p>
+    <p>Forever access</p>
+    <button onclick="showPay()">Get Lifetime</button>
+  </div>
+</div>
+
 <div class="footer">
-  Free trial • Upgrade with USDT (TRC20) • Contact: rasooltorabi81@gmail.com
+  💎 Pay with USDT (TRC20) • Contact: rasooltorabi81@gmail.com
 </div>
 
 <script>
@@ -104,7 +143,7 @@ const usageKey = "ch_usage";
 const timeKey = "ch_time";
 const historyKey = "ch_history";
 
-/* TRIAL */
+/* TRIAL CHECK */
 function isExpired() {
   let t = localStorage.getItem(timeKey);
   if (!t) {
@@ -122,12 +161,13 @@ function saveHistory(html) {
   localStorage.setItem(historyKey, JSON.stringify(h));
   renderHistory();
 }
+
 function renderHistory() {
   let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
   let box = document.getElementById("historyList");
-  box.innerHTML = h.length ? h.map(i =>
-    `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`
-  ).join("") : "<div style='opacity:.4'>No hooks yet</div>";
+  box.innerHTML = h.length
+    ? h.map(i => `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`).join("")
+    : "<div style='opacity:.4'>No hooks yet</div>";
 }
 
 /* GENERATOR */
@@ -141,8 +181,8 @@ function generateHooks() {
     btn.innerText = "Upgrade Required";
     out.innerHTML = `
       ⛔ Trial ended<br><br>
-      💎 Unlock Pro Version<br>
-      Pay with USDT (TRC20)<br><br>
+      <strong>Unlock Pro</strong><br>
+      💎 USDT (TRC20)<br>
       📩 rasooltorabi81@gmail.com
     `;
     return;
@@ -164,6 +204,15 @@ function generateHooks() {
   localStorage.setItem(usageKey, usage);
   out.innerHTML = res + `<div style="opacity:.5">Uses left: ${MAX_USES-usage}</div>`;
   saveHistory(res);
+}
+
+/* PAY */
+function showPay() {
+  alert(
+    "Upgrade to ContentHooks Pro 🚀\n\n" +
+    "💎 Pay with USDT (TRC20)\n\n" +
+    "📩 Contact: rasooltorabi81@gmail.com"
+  );
 }
 
 renderHistory();
