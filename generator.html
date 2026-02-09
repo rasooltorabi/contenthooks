@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hook Generator | ContentHooks</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="background:#0B0F14;color:#fff;font-family:Arial;text-align:center;padding:40px">
+
+<h1 style="color:#00ff9c">Hook Generator</h1>
+<p>Click to generate scroll-stopping hooks</p>
+
+<button onclick="generateHooks()" style="background:#00ff9c;border:none;padding:15px 25px;border-radius:8px;cursor:pointer">
+Generate Hooks
+</button>
+
+<div id="output" style="margin-top:30px;font-size:18px"></div>
+
+<script>
+const hooks = [
+  "Nobody talks about this, but…",
+  "Stop scrolling if you want more views.",
+  "This is why your videos don’t go viral.",
+  "You’re doing this wrong.",
+  "Watch this before you post again.",
+  "This changed everything for me.",
+  "Don’t make this mistake.",
+  "If I started today, I’d do this.",
+  "This works better than hashtags.",
+  "Here’s the real reason."
+];
+
+function generateHooks() {
+  let html = "";
+  for (let i = 0; i < 5; i++) {
+    const hook = hooks[Math.floor(Math.random() * hooks.length)];
+    html += "👉 " + hook + "<br><br>";
+  }
+  document.getElementById("output").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
