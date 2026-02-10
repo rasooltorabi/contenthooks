@@ -1,0 +1,85 @@
+/* ================= RESET ================= */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+/* ================= BODY BASE ================= */
+body{
+min-height:100vh;
+font-family:Arial,sans-serif;
+color:#fff;
+background:#000;
+overflow-x:hidden;
+}
+
+/* ================= ANIMATED LOGO BACKGROUND ================= */
+.bg{
+position:fixed;
+inset:0;
+z-index:-2;
+overflow:hidden;
+}
+
+.bg::before{
+content:"";
+position:absolute;
+inset:-200%;
+
+background-image:
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/instagram.svg"),
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg"),
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/tiktok.svg");
+
+background-size:
+48px,
+48px,
+48px;
+
+background-repeat:
+repeat,
+repeat,
+repeat;
+
+background-position:
+0 0,
+120px 120px,
+240px 240px;
+
+opacity:0.06;
+filter:invert(1);
+
+animation: bgMove 160s linear infinite;
+}
+
+@keyframes bgMove{
+from{
+transform:translate(0,0);
+}
+to{
+transform:translate(600px,600px);
+}
+}
+
+/* ================= DARK OVERLAY ================= */
+.overlay{
+position:fixed;
+inset:0;
+z-index:-1;
+background:linear-gradient(
+rgba(0,0,0,.85),
+rgba(0,0,0,.95)
+);
+}
+
+/* ================= MOBILE OPTIMIZATION ================= */
+@media(max-width:600px){
+.bg::before{
+background-size:
+36px,
+36px,
+36px;
+opacity:0.05;
+}
+}
