@@ -2,7 +2,6 @@
 <html>
 <head>
 <title>Free Trial</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="background.css">
 <script src="app.js"></script>
 </head>
@@ -11,16 +10,24 @@
 <div class="bg"></div><div class="overlay"></div>
 
 <div class="container">
-<h2>🎁 24-Hour Free Trial</h2>
+<h2>🎁 24 Hour Free Trial</h2>
 
 <div class="card">
-✔ Full Generator Access<br>
-✔ No Credit Card<br>
-✔ Auto Lock After 24h
+✔ Full Generator<br>
+✔ No Card Required<br>
+✔ Auto Lock
 </div>
 
-<button onclick="startTrial()">Activate Trial</button>
+<button onclick="activateTrial()">Activate Trial</button>
 </div>
+
+<script>
+function activateTrial(){
+const until=Date.now()+86400000;
+localStorage.setItem("trial_until",until);
+location.href="dashboard.html";
+}
+</script>
 
 </body>
 </html>
