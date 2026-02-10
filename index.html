@@ -15,26 +15,26 @@ color:#fff;
 text-align:center;
 }
 
+/* CONTENT */
 .container{
 max-width:420px;
 margin:auto;
-padding:80px 20px;
+padding:90px 20px;
 position:relative;
-z-index:2;
+z-index:10;
 }
 
 h1{
-font-size:42px;
+font-size:40px;
 color:#00ff9c;
 margin-bottom:10px;
 }
 
 .subtitle{
 opacity:.75;
-margin-bottom:30px;
+margin-bottom:28px;
 }
 
-/* CONTROLS */
 select,button{
 width:100%;
 padding:14px;
@@ -53,14 +53,12 @@ font-weight:bold;
 cursor:pointer;
 }
 
-/* TRIAL */
-.trial-btn{
-margin-top:20px;
+.trial{
 background:linear-gradient(90deg,#00ff9c,#00cfff);
+margin-top:18px;
 font-size:18px;
 }
 
-/* PLANS */
 .plans{
 margin-top:40px;
 display:grid;
@@ -83,7 +81,6 @@ font-weight:normal;
 margin-top:4px;
 }
 
-/* PAYMENT BOX */
 #paymentBox{
 display:none;
 margin-top:25px;
@@ -98,14 +95,14 @@ line-height:1.6;
 .footer{
 margin-top:40px;
 font-size:12px;
-opacity:.6;
+opacity:.7;
 }
 </style>
 </head>
 
 <body>
 
-<!-- BACKGROUND -->
+<!-- BACKGROUND (حتماً باید اینجا باشه) -->
 <div class="bg"></div>
 <div class="overlay"></div>
 
@@ -137,68 +134,49 @@ Hooks that stop the scroll • Instagram • TikTok • YouTube
 
 <button>Generate Hooks</button>
 
-<!-- TRIAL -->
-<button class="trial-btn" onclick="startTrial()">🚀 Start 24-Hour Free Trial</button>
+<button class="trial" onclick="startTrial()">🚀 Start 24-Hour Free Trial</button>
 <div style="font-size:12px;opacity:.7;margin-top:6px">
 No credit card required
 </div>
 
-<!-- PLANS -->
 <div class="plans">
-<div class="plan" onclick="showPay('1M')">
-1 Month
-<small>10 USDT</small>
+<div class="plan" onclick="showPay('1M')">1 Month<small>10 USDT</small></div>
+<div class="plan" onclick="showPay('3M')">3 Months<small>19 USDT</small></div>
+<div class="plan" onclick="showPay('6M')">6 Months<small>39 USDT</small></div>
+<div class="plan" onclick="showPay('1Y')">1 Year<small>70 USDT</small></div>
 </div>
 
-<div class="plan" onclick="showPay('3M')">
-3 Months
-<small>19 USDT</small>
-</div>
-
-<div class="plan" onclick="showPay('6M')">
-6 Months
-<small>39 USDT</small>
-</div>
-
-<div class="plan" onclick="showPay('1Y')">
-1 Year
-<small>70 USDT</small>
-</div>
-</div>
-
-<!-- PAYMENT -->
 <div id="paymentBox"></div>
 
 <div class="footer">
-USDT (TRC20)
+USDT (TRC20)<br>
+Contact: <b>rasooltorabi81@gmail.com</b>
 </div>
 
 </div>
 
 <script>
-/* ===== TRIAL ===== */
 function startTrial(){
 const until=new Date(Date.now()+24*60*60*1000);
 localStorage.setItem("ch_trial_until",until.toISOString());
-alert("✅ Free trial activated!");
-location.href="generator.html";
+alert("✅ Trial activated!");
 }
 
-/* ===== PAYMENT ===== */
 const USDT="TCc2WRafYtJS2iJPjCQqWLFSFGSEUo2xoX";
 function showPay(plan){
 const prices={1M:10,3M:19,6M:39,1Y:70};
 const box=document.getElementById("paymentBox");
 box.style.display="block";
 box.innerHTML=`
-<b>Activate ${plan}</b><br><br>
+<b>${plan} Plan</b><br>
 Amount: <b>${prices[plan]} USDT</b><br>
 Network: TRC20<br><br>
 <div style="background:#000;color:#0f0;padding:10px;border-radius:10px;word-break:break-all">
 ${USDT}
 </div>
 <br>
-After payment send TXID + Email
+Send TXID + Email to:<br>
+<b>rasooltorabi81@gmail.com</b>
 `;
 }
 </script>
