@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Animated Logo Background</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== RESET ===== */
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+height:100vh;
+font-family:Arial,sans-serif;
+color:#fff;
+overflow:hidden;
+background:#000;
+}
+
+/* ===== ANIMATED BACKGROUND ===== */
+.bg{
+position:fixed;
+inset:0;
+z-index:-1;
+overflow:hidden;
+}
+
+.bg::before{
+content:"";
+position:absolute;
+inset:-200%;
+background-image:
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/instagram.svg"),
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/youtube.svg"),
+url("https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/tiktok.svg");
+
+background-size:
+48px,
+48px,
+48px;
+
+background-repeat:
+repeat,
+repeat,
+repeat;
+
+background-position:
+0 0,
+120px 120px,
+240px 240px;
+
+opacity:0.07;
+filter:invert(1);
+
+animation: movebg 120s linear infinite;
+}
+
+@keyframes movebg{
+from{
+transform:translate(0,0);
+}
+to{
+transform:translate(500px,500px);
+}
+}
+
+/* ===== DARK OVERLAY ===== */
+.overlay{
+position:fixed;
+inset:0;
+background:linear-gradient(
+rgba(0,0,0,.85),
+rgba(0,0,0,.95)
+);
+z-index:0;
+}
+
+/* ===== CONTENT ===== */
+.container{
+position:relative;
+z-index:1;
+height:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+}
+
+.box{
+background:rgba(255,255,255,.04);
+border-radius:20px;
+padding:40px;
+max-width:420px;
+backdrop-filter:blur(6px);
+}
+
+h1{
+color:#00ff9c;
+margin-bottom:14px;
+font-size:42px;
+}
+
+p{
+opacity:.85;
+line-height:1.6;
+}
+
+button{
+margin-top:25px;
+padding:14px 28px;
+border:none;
+border-radius:14px;
+font-weight:bold;
+cursor:pointer;
+background:#00ff9c;
+color:#000;
+font-size:16px;
+}
+
+button:hover{
+opacity:.9;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<!-- CONTENT -->
+<div class="container">
+<div class="box">
+<h1>AI Hooks</h1>
+<p>
+Create viral hooks for<br>
+Instagram • TikTok • YouTube
+</p>
+
+<button>Start 24h Trial</button>
+</div>
+</div>
+
+</body>
+</html>
