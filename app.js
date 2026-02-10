@@ -75,3 +75,12 @@ function generateHook(){
   const out=document.getElementById("output");
   out.innerText=hooks[Math.floor(Math.random()*hooks.length)];
 }
+function protect(){
+const paid=localStorage.getItem("paid");
+const trial=localStorage.getItem("trial_until");
+
+if(paid==="true") return;
+if(trial && Date.now()<trial) return;
+
+location.href="pricing.html";
+}
