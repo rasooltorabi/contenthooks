@@ -1,32 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="background.css">
 <meta charset="UTF-8">
 <title>ContentHooks AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link rel="stylesheet" href="background.css">
+
 <style>
 body{
-  <div class="bg"></div>
-<div class="overlay"></div>
-  
 margin:0;
 min-height:100vh;
 font-family:Arial,sans-serif;
 color:#fff;
-background:
-linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.95)),
-url("https://images.unsplash.com/photo-1611605698335-3b1569810432");
-background-size:cover;
-background-position:center;
 text-align:center;
 }
 
 .container{
 max-width:900px;
 margin:auto;
-padding:60px 20px;
+padding:80px 20px;
+position:relative;
+z-index:2;
 }
 
 h1{
@@ -46,6 +41,8 @@ border:none;
 margin:6px;
 font-size:16px;
 }
+
+select{color:#000}
 
 button{
 background:#00ff9c;
@@ -72,12 +69,10 @@ margin-top:45px;
 background:#fff;
 border-radius:16px;
 padding:20px;
-}
-
-.plan h3,
-.plan p{
 color:#000;
 }
+
+.plan h3,.plan p{color:#000}
 
 /* PAYMENT */
 .payment-box{
@@ -100,6 +95,11 @@ opacity:.6;
 </head>
 
 <body>
+
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="overlay"></div>
+
 <div class="container">
 
 <h1>AI Hooks Generator</h1>
@@ -146,139 +146,6 @@ No credit card required
 </div>
 </div>
 
-<p style="opacity:.8;margin-top:40px">
-Trusted by creators to write hooks that go viral.
-</p>
-
 <!-- PLANS -->
 <div class="plans">
-<div class="plan">
-<h3>1 Month</h3>
-<p>10 USDT</p>
-<button onclick="showPay('1M')">Buy</button>
-</div>
-
-<div class="plan">
-<h3>3 Months</h3>
-<p>19 USDT</p>
-<button onclick="showPay('3M')">Buy</button>
-</div>
-
-<div class="plan">
-<h3>6 Months</h3>
-<p>39 USDT</p>
-<button onclick="showPay('6M')">Buy</button>
-</div>
-
-<div class="plan">
-<h3>1 Year</h3>
-<p>70 USDT</p>
-<button onclick="showPay('1Y')">Buy</button>
-</div>
-</div>
-
-<div id="paymentBox" class="payment-box"></div>
-
-<div class="footer">
-USDT (TRC20) • Contact: rasooltorabi81@gmail.com
-</div>
-
-</div>
-
-<script>
-/* ====== CONFIG ====== */
-const OPENAI_API_KEY = "PUT_YOUR_API_KEY_HERE";
-const USDT_ADDRESS = "TCc2WRafYtJS2iJPjCQqWLFSFGSEUo2xoX";
-
-/* ====== KEYS ====== */
-const proKey="ch_pro_until";
-const trialKey="ch_trial_until";
-const deviceKey="ch_device";
-
-/* ====== DEVICE LOCK ====== */
-if(!localStorage.getItem(deviceKey)){
-localStorage.setItem(deviceKey,crypto.randomUUID());
-}
-
-/* ====== ACCESS ====== */
-function isPro(){
-const now=new Date();
-const pro=new Date(localStorage.getItem(proKey));
-const trial=new Date(localStorage.getItem(trialKey));
-return (pro>now)||(trial>now);
-}
-
-/* ====== TRIAL ====== */
-function startTrial(){
-const until=new Date(Date.now()+24*60*60*1000);
-localStorage.setItem(trialKey,until.toISOString());
-alert("✅ 24-hour free trial activated!");
-location.reload();
-}
-
-/* ====== AI ====== */
-async function generateHooks(){
-const out=document.getElementById("output");
-
-if(!isPro()){
-out.innerHTML="⛔ Please start free trial or purchase a plan.";
-return;
-}
-
-const prompt=`Generate 5 viral hooks.
-Platform: ${platform.value}
-Topic: ${topic.value}
-Tone: ${tone.value}
-Short, punchy and scroll-stopping.`;
-
-const res=await fetch("https://api.openai.com/v1/chat/completions",{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+OPENAI_API_KEY
-},
-body:JSON.stringify({
-model:"gpt-4o-mini",
-messages:[{role:"user",content:prompt}],
-temperature:0.9
-})
-});
-
-const data=await res.json();
-out.innerHTML=data.choices[0].message.content.replace(/^- /gm,"👉 ");
-}
-
-/* ====== PAYMENT ====== */
-function showPay(plan){
-const prices={
-"1M":"10",
-"3M":"19",
-"6M":"39",
-"1Y":"70"
-};
-
-const box=document.getElementById("paymentBox");
-box.style.display="block";
-box.innerHTML=`
-<h3>Activate ${plan} Plan</h3>
-
-<p><b>Amount:</b> ${prices[plan]} USDT</p>
-<p><b>Network:</b> TRC20</p>
-
-<div style="background:#000;color:#0f0;padding:12px;border-radius:10px;word-break:break-all">
-${USDT_ADDRESS}
-</div>
-
-<p style="font-size:14px;margin-top:10px">
-After payment, send:<br>
-• TXID<br>
-• Your email<br>
-• Selected plan
-</p>
-
-<b>Email:</b> rasooltorabi81@gmail.com
-`;
-}
-</script>
-</body>
-</html>
+<div class="plan"><h3>1 Month</
