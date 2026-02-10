@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<script>
+const email = localStorage.getItem("pro_email");
+const until = localStorage.getItem("pro_until");
+
+if(!email || !until || new Date(until) < new Date()){
+  location.href = "activate.html";
+}
+</script>
+  <head>
 <meta charset="UTF-8">
 <title>AI Hooks Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
