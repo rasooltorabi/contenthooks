@@ -84,3 +84,19 @@ if(trial && Date.now()<trial) return;
 
 location.href="pricing.html";
 }
+function getUser(){
+  return JSON.parse(localStorage.getItem("user"));
+}
+
+function requireAuth(){
+  const user=getUser();
+  if(!user) location.href="login.html";
+}
+
+function hasAccess(){
+  const user=getUser();
+  if(!user) return false;
+  if(user.paid) return true;
+  if(Date.now()<user.trial) return true;
+  return false;
+}
