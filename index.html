@@ -2,223 +2,214 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ContentHooks – Viral Hook Generator</title>
+<title>ContentHooks AI</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body {
   margin:0;
-  background:#0B0F14;
-  color:#fff;
+  min-height:100vh;
   font-family:Arial, sans-serif;
+  color:#fff;
+  background:
+    linear-gradient(rgba(0,0,0,.75), rgba(0,0,0,.9)),
+    url("https://images.unsplash.com/photo-1611162616475-46b635cb6868");
+  background-size:cover;
+  background-position:center;
   text-align:center;
-  padding:40px 20px;
 }
-h1 { color:#00ff9c; font-size:42px; }
-p { opacity:.8; }
+
+.container {
+  max-width:900px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+h1 {
+  font-size:48px;
+  color:#00ff9c;
+  margin-bottom:10px;
+}
+
+.subtitle {
+  opacity:.85;
+  margin-bottom:40px;
+}
+
+select, button {
+  padding:12px 18px;
+  border-radius:10px;
+  border:none;
+  margin:8px;
+  font-size:16px;
+}
+
 button {
   background:#00ff9c;
-  border:none;
-  padding:14px 26px;
-  border-radius:10px;
   font-weight:bold;
   cursor:pointer;
-  margin-top:10px;
 }
-select,input {
-  margin:8px;
-  padding:10px;
-  border-radius:8px;
+
+.hooks {
+  margin-top:30px;
+  font-size:18px;
+  line-height:1.6;
 }
-.container { max-width:800px; margin:0 auto; }
-.hooks { margin-top:30px; font-size:18px; line-height:1.6; }
-.card {
-  border:1px solid #222;
+
+.plans {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:20px;
+  margin-top:50px;
+}
+
+.plan {
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
   border-radius:16px;
-  padding:25px;
-  margin:15px;
-  width:240px;
+  padding:20px;
 }
-.pricing {
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  margin-top:50px;
+
+.plan h3 {
+  color:#00ff9c;
 }
-.history {
-  text-align:left;
-  margin-top:50px;
+
+.plan button {
+  margin-top:10px;
+  width:100%;
 }
-.history h3 { color:#00ff9c; }
-.history-item {
-  border-bottom:1px solid #222;
-  padding:12px 0;
-  font-size:15px;
-}
+
 .footer {
   margin-top:60px;
   font-size:13px;
-  opacity:.5;
+  opacity:.6;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Hooks that stop the scroll.</h1>
-<p>Create viral hooks for TikTok, Reels & Shorts</p>
-
-<div>
-  <select id="platform">
-    <option>TikTok</option>
-    <option>Instagram Reels</option>
-    <option>YouTube Shorts</option>
-  </select>
-
-  <select id="tone">
-    <option>Curious</option>
-    <option>Aggressive</option>
-    <option>Emotional</option>
-  </select>
-
-  <select id="topic">
-    <option>Creator</option>
-    <option>Business</option>
-  </select>
-</div>
-
-<button id="generateBtn" onclick="generateHooks()">Generate Hooks</button>
-
 <div class="container">
+  <h1>AI Hooks Generator</h1>
+  <div class="subtitle">
+    Built for Instagram Reels • TikTok • YouTube Shorts
+  </div>
+
+  <div>
+    <select id="platform">
+      <option>Instagram Reels</option>
+      <option>TikTok</option>
+      <option>YouTube Shorts</option>
+    </select>
+
+    <select id="tone">
+      <option>Curious</option>
+      <option>Aggressive</option>
+      <option>Emotional</option>
+    </select>
+
+    <select id="topic">
+      <option>Content Creator</option>
+      <option>Business</option>
+      <option>Motivation</option>
+      <option>Crypto</option>
+    </select>
+  </div>
+
+  <button onclick="generateHooks()">Generate Hooks</button>
+
   <div id="output" class="hooks"></div>
 
-  <div class="history">
-    <h3>Saved Hooks</h3>
-    <div id="historyList"></div>
+  <!-- PRICING -->
+  <div class="plans">
+    <div class="plan">
+      <h3>1 Month</h3>
+      <p>10 USDT</p>
+      <button onclick="buy('1m')">Buy</button>
+    </div>
+
+    <div class="plan">
+      <h3>3 Months</h3>
+      <p>19 USDT</p>
+      <button onclick="buy('3m')">Buy</button>
+    </div>
+
+    <div class="plan">
+      <h3>6 Months</h3>
+      <p>39 USDT</p>
+      <button onclick="buy('6m')">Buy</button>
+    </div>
+
+    <div class="plan">
+      <h3>1 Year</h3>
+      <p>70 USDT</p>
+      <button onclick="buy('12m')">Buy</button>
+    </div>
   </div>
-</div>
 
-<!-- PRICING -->
-<div class="pricing">
-  <div class="card">
-    <h3>Starter</h3>
-    <h2>$0</h2>
-    <p>10 hooks</p>
+  <div class="footer">
+    💎 Pay with USDT (TRC20)<br>
+    📩 Contact: rasooltorabi81@gmail.com
   </div>
-
-  <div class="card" style="border:2px solid #00ff9c">
-    <h3>Pro</h3>
-    <h2>$29</h2>
-    <p>Unlimited</p>
-    <p>History</p>
-    <p>Lifetime</p>
-    <button onclick="showPay()">Upgrade</button>
-  </div>
-</div>
-
-<!-- UNLOCK -->
-<div style="margin-top:40px">
-  <p style="opacity:.6">Already paid?</p>
-  <input id="unlockCode" placeholder="Enter unlock code">
-  <br>
-  <button onclick="unlockPro()">Unlock Pro</button>
-</div>
-
-<div class="footer">
-  💎 Pay with USDT (TRC20) • Contact: rasooltorabi81@gmail.com
 </div>
 
 <script>
-/* CONFIG */
-const MAX_USES = 10;
-const usageKey = "ch_usage";
-const historyKey = "ch_history";
-const proKey = "ch_pro";
-const VALID_CODES = ["CH-PRO-2026","FOUNDER-ACCESS","LIFETIME-OK"];
+const OPENAI_API_KEY = "PUT_YOUR_API_KEY_HERE";
+const proKey = "ch_pro_until";
 
-/* PRO CHECK */
 function isPro() {
-  return localStorage.getItem(proKey) === "true";
+  const until = localStorage.getItem(proKey);
+  return until && new Date(until) > new Date();
 }
 
-/* HISTORY */
-function saveHistory(html) {
-  if (!isPro()) return;
-  let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
-  h.unshift({ date:new Date().toLocaleString(), html });
-  h = h.slice(0,5);
-  localStorage.setItem(historyKey, JSON.stringify(h));
-  renderHistory();
-}
-function renderHistory() {
+async function generateHooks() {
+  const out = document.getElementById("output");
+
   if (!isPro()) {
-    document.getElementById("historyList").innerHTML =
-      "<div style='opacity:.4'>Upgrade to save history</div>";
-    return;
-  }
-  let h = JSON.parse(localStorage.getItem(historyKey) || "[]");
-  document.getElementById("historyList").innerHTML =
-    h.map(i => `<div class="history-item"><div style="opacity:.5">${i.date}</div>${i.html}</div>`).join("");
-}
-
-/* GENERATOR */
-function generateHooks() {
-  let out = document.getElementById("output");
-  let btn = document.getElementById("generateBtn");
-
-  let usage = +localStorage.getItem(usageKey) || 0;
-  if (!isPro() && usage >= MAX_USES) {
-    btn.disabled = true;
-    btn.innerText = "Upgrade Required";
-    out.innerHTML = "⛔ Free limit reached";
+    out.innerHTML = "⛔ Please purchase a plan to unlock AI hooks.";
     return;
   }
 
-  const hooks = [
-    "Nobody talks about this, but…",
-    "Stop scrolling. This is important.",
-    "This mistake is killing your growth.",
-    "I wish I knew this earlier.",
-    "This changed everything for me."
-  ];
+  const platform = platformSelect().value;
+  const tone = toneSelect().value;
+  const topic = topicSelect().value;
 
-  let res = "";
-  for (let i=0;i<5;i++)
-    res += "👉 " + hooks[Math.floor(Math.random()*hooks.length)] + "<br><br>";
+  const prompt = `
+Generate 5 viral hooks for ${platform}.
+Topic: ${topic}
+Tone: ${tone}
+Short and powerful.
+`;
 
-  if (!isPro()) {
-    usage++;
-    localStorage.setItem(usageKey, usage);
-    res += `<div style="opacity:.5">Uses left: ${MAX_USES-usage}</div>`;
-  }
+  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json",
+      "Authorization":"Bearer " + OPENAI_API_KEY
+    },
+    body:JSON.stringify({
+      model:"gpt-4o-mini",
+      messages:[{role:"user",content:prompt}],
+      temperature:0.9
+    })
+  });
 
-  out.innerHTML = res;
-  saveHistory(res);
+  const data = await res.json();
+  out.innerHTML = data.choices[0].message.content.replace(/^- /gm,"👉 ");
 }
 
-/* PAY */
-function showPay() {
-  alert(
-    "Upgrade to PRO 🚀\n\n" +
-    "💎 USDT (TRC20)\n\n" +
-    "📩 Contact: rasooltorabi81@gmail.com\n\n" +
-    "You will receive an unlock code."
-  );
+function buy(plan) {
+  let months = { "1m":1, "3m":3, "6m":6, "12m":12 }[plan];
+  let until = new Date();
+  until.setMonth(until.getMonth() + months);
+  localStorage.setItem(proKey, until.toISOString());
+
+  alert("✅ Plan activated! Enjoy Pro access.");
 }
 
-/* UNLOCK */
-function unlockPro() {
-  const code = document.getElementById("unlockCode").value.trim();
-  if (VALID_CODES.includes(code)) {
-    localStorage.setItem(proKey, "true");
-    alert("✅ Pro unlocked. Enjoy!");
-    location.reload();
-  } else {
-    alert("❌ Invalid code");
-  }
-}
-
-renderHistory();
+function platformSelect(){ return document.getElementById("platform"); }
+function toneSelect(){ return document.getElementById("tone"); }
+function topicSelect(){ return document.getElementById("topic"); }
 </script>
 
 </body>
