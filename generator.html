@@ -43,6 +43,21 @@ Generate
 
 <button onclick="gen()">Generate</button>
 <pre id="out"></pre>
+<script src="app.js"></script>
+<body onload="requireAuth(); if(!hasAccess())location.href='pricing.html'">
+
+<select id="platform">
+<option>TikTok</option>
+<option>Instagram</option>
+</select>
+
+<select id="tone">
+<option>Curiosity</option>
+<option>Emotional</option>
+</select>
+
+<button onclick="gen()">Generate</button>
+<pre id="out"></pre>
 
 <script>
 async function gen(){
