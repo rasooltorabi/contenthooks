@@ -224,6 +224,25 @@ function platformSelect(){ return document.getElementById("platform"); }
 function toneSelect(){ return document.getElementById("tone"); }
 function topicSelect(){ return document.getElementById("topic"); }
 </script>
+<script>
+const deviceKey = "ch_device_id";
 
+function lockDevice() {
+  if (!localStorage.getItem(deviceKey)) {
+    localStorage.setItem(deviceKey, crypto.randomUUID());
+  }
+}
+
+function checkDevice() {
+  const saved = localStorage.getItem(deviceKey);
+  if (!saved) {
+    alert("Access denied");
+    location.reload();
+  }
+}
+
+lockDevice();
+checkDevice();
+</script>
 </body>
 </html>
