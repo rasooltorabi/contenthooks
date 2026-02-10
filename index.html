@@ -1,186 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>AI Hooks Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="background.css">
-
-<style>
-body{
-margin:0;
-font-family:Arial,sans-serif;
-color:#fff;
-text-align:center;
-}
-
-/* CONTENT */
-.container{
-max-width:420px;
-margin:auto;
-padding:90px 20px;
-position:relative;
-z-index:10;
-}
-
-h1{
-font-size:40px;
-color:#00ff9c;
-margin-bottom:10px;
-}
-
-.subtitle{
-opacity:.75;
-margin-bottom:28px;
-}
-
-select,button{
-width:100%;
-padding:14px;
-border-radius:14px;
-border:none;
-font-size:16px;
-margin:6px 0;
-}
-
-select{color:#000}
-
-button{
-background:#00ff9c;
-color:#000;
-font-weight:bold;
-cursor:pointer;
-}
-
-.trial{
-background:linear-gradient(90deg,#00ff9c,#00cfff);
-margin-top:18px;
-font-size:18px;
-}
-
-.plans{
-margin-top:40px;
-display:grid;
-gap:14px;
-}
-
-.plan{
-background:#fff;
-color:#000;
-padding:18px;
-border-radius:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.plan small{
-display:block;
-opacity:.6;
-font-weight:normal;
-margin-top:4px;
-}
-
-#paymentBox{
-display:none;
-margin-top:25px;
-background:#fff;
-color:#000;
-padding:18px;
-border-radius:16px;
-font-size:14px;
-line-height:1.6;
-}
-
-.footer{
-margin-top:40px;
-font-size:12px;
-opacity:.7;
-}
-</style>
-</head>
-
-<body>
-
-<!-- BACKGROUND (حتماً باید اینجا باشه) -->
-<div class="bg"></div>
-<div class="overlay"></div>
-
-<div class="container">
-
-<h1>AI Hooks Generator</h1>
-<div class="subtitle">
-Hooks that stop the scroll • Instagram • TikTok • YouTube
-</div>
-
-<select>
-<option>Instagram Reels</option>
-<option>TikTok</option>
-<option>YouTube Shorts</option>
-</select>
-
-<select>
-<option>Curious</option>
-<option>Aggressive</option>
-<option>Emotional</option>
-</select>
-
-<select>
-<option>Content Creator</option>
-<option>Business</option>
-<option>Motivation</option>
-<option>Crypto</option>
-</select>
-
-<button>Generate Hooks</button>
-
-<button class="trial" onclick="startTrial()">🚀 Start 24-Hour Free Trial</button>
-<div style="font-size:12px;opacity:.7;margin-top:6px">
-No credit card required
-</div>
-
-<div class="plans">
-<div class="plan" onclick="showPay('1M')">1 Month<small>10 USDT</small></div>
-<div class="plan" onclick="showPay('3M')">3 Months<small>19 USDT</small></div>
-<div class="plan" onclick="showPay('6M')">6 Months<small>39 USDT</small></div>
-<div class="plan" onclick="showPay('1Y')">1 Year<small>70 USDT</small></div>
-</div>
-
-<div id="paymentBox"></div>
-
-<div class="footer">
-USDT (TRC20)<br>
-Contact: <b>rasooltorabi81@gmail.com</b>
-</div>
-
-</div>
-
-<script>
-function startTrial(){
-const until=new Date(Date.now()+24*60*60*1000);
-localStorage.setItem("ch_trial_until",until.toISOString());
-alert("✅ Trial activated!");
-}
-
-const USDT="TCc2WRafYtJS2iJPjCQqWLFSFGSEUo2xoX";
-function showPay(plan){
-const prices={1M:10,3M:19,6M:39,1Y:70};
-const box=document.getElementById("paymentBox");
-box.style.display="block";
-box.innerHTML=`
-<b>${plan} Plan</b><br>
-Amount: <b>${prices[plan]} USDT</b><br>
-Network: TRC20<br><br>
-<div style="background:#000;color:#0f0;padding:10px;border-radius:10px;word-break:break-all">
-${USDT}
-</div>
-<br>
-Send TXID + Email to:<br>
-<b>rasooltorabi81@gmail.com</b>
-`;
-}
-</script>
-<title>AI Hooks Generator</title>
+<title>ContentHooks AI</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="background.css">
 </head>
@@ -189,19 +10,19 @@ Send TXID + Email to:<br>
 <div class="bg"></div><div class="overlay"></div>
 
 <div class="container">
-<h1 style="color:#00ff9c">AI Hooks Generator</h1>
-<p>Stop the scroll • Reels • TikTok • Shorts</p>
+<h1 style="color:#00ff9c">ContentHooks AI</h1>
+<p>Hooks that stop the scroll</p>
 
-<button onclick="location.href='trial.html'">
+<button onclick="location.href='login.html'">
 🚀 Start Free Trial
 </button>
 
 <button onclick="location.href='payment.html'">
-💳 Upgrade Now
+💳 Upgrade
 </button>
 
 <div class="footer">
-Contact: rasooltorabi81@gmail.com
+Instagram • TikTok • YouTube
 </div>
 </div>
 
