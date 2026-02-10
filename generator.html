@@ -5,7 +5,22 @@
 <title>AI Hooks Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
+  <script>
+const proKey = "pro_until";
+const emailKey = "pro_email";
+
+function hasPro(){
+  const until = localStorage.getItem(proKey);
+  return until && new Date(until) > new Date();
+}
+
+if(!hasPro()){
+  alert("⛔ Access denied. Please activate Pro.");
+  location.href = "activate.html";
+}
+ </script>
+
+  <style>
 body{
 margin:0;
 min-height:100vh;
