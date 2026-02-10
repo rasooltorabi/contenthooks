@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ContentHooks AI</title>
+<title>AI Hooks Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet" href="background.css">
@@ -10,14 +10,13 @@
 <style>
 body{
 margin:0;
-min-height:100vh;
 font-family:Arial,sans-serif;
 color:#fff;
 text-align:center;
 }
 
 .container{
-max-width:900px;
+max-width:420px;
 margin:auto;
 padding:80px 20px;
 position:relative;
@@ -25,21 +24,24 @@ z-index:2;
 }
 
 h1{
-font-size:46px;
+font-size:42px;
 color:#00ff9c;
+margin-bottom:10px;
 }
 
 .subtitle{
-opacity:.85;
-margin-bottom:35px;
+opacity:.75;
+margin-bottom:30px;
 }
 
+/* CONTROLS */
 select,button{
-padding:12px 18px;
-border-radius:10px;
+width:100%;
+padding:14px;
+border-radius:14px;
 border:none;
-margin:6px;
 font-size:16px;
+margin:6px 0;
 }
 
 select{color:#000}
@@ -51,44 +53,51 @@ font-weight:bold;
 cursor:pointer;
 }
 
-.hooks{
-margin-top:30px;
+/* TRIAL */
+.trial-btn{
+margin-top:20px;
+background:linear-gradient(90deg,#00ff9c,#00cfff);
 font-size:18px;
-line-height:1.6;
 }
 
 /* PLANS */
 .plans{
+margin-top:40px;
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
-margin-top:45px;
+gap:14px;
 }
 
 .plan{
 background:#fff;
-border-radius:16px;
-padding:20px;
 color:#000;
+padding:18px;
+border-radius:16px;
+font-weight:bold;
+cursor:pointer;
 }
 
-.plan h3,.plan p{color:#000}
+.plan small{
+display:block;
+opacity:.6;
+font-weight:normal;
+margin-top:4px;
+}
 
-/* PAYMENT */
-.payment-box{
-margin-top:35px;
-background:#fff;
-border-radius:14px;
-padding:20px;
-font-size:15px;
-line-height:1.7;
-color:#000;
+/* PAYMENT BOX */
+#paymentBox{
 display:none;
+margin-top:25px;
+background:#fff;
+color:#000;
+padding:18px;
+border-radius:16px;
+font-size:14px;
+line-height:1.6;
 }
 
 .footer{
-margin-top:60px;
-font-size:13px;
+margin-top:40px;
+font-size:12px;
 opacity:.6;
 }
 </style>
@@ -107,45 +116,92 @@ opacity:.6;
 Hooks that stop the scroll • Instagram • TikTok • YouTube
 </div>
 
-<select id="platform">
+<select>
 <option>Instagram Reels</option>
 <option>TikTok</option>
 <option>YouTube Shorts</option>
 </select>
 
-<select id="tone">
+<select>
 <option>Curious</option>
 <option>Aggressive</option>
 <option>Emotional</option>
 </select>
 
-<select id="topic">
+<select>
 <option>Content Creator</option>
 <option>Business</option>
 <option>Motivation</option>
 <option>Crypto</option>
 </select>
 
-<br>
-<button onclick="generateHooks()">Generate Hooks</button>
+<button>Generate Hooks</button>
 
-<div id="output" class="hooks"></div>
-
-<!-- FREE TRIAL -->
-<div style="margin-top:40px">
-<button onclick="startTrial()" style="
-background:linear-gradient(90deg,#00ff9c,#00cfff);
-padding:16px 30px;
-font-size:18px;
-border-radius:14px;
-">
-🚀 Start 24-Hour Free Trial
-</button>
-<div style="font-size:13px;opacity:.7;margin-top:8px">
+<!-- TRIAL -->
+<button class="trial-btn" onclick="startTrial()">🚀 Start 24-Hour Free Trial</button>
+<div style="font-size:12px;opacity:.7;margin-top:6px">
 No credit card required
-</div>
 </div>
 
 <!-- PLANS -->
 <div class="plans">
-<div class="plan"><h3>1 Month</
+<div class="plan" onclick="showPay('1M')">
+1 Month
+<small>10 USDT</small>
+</div>
+
+<div class="plan" onclick="showPay('3M')">
+3 Months
+<small>19 USDT</small>
+</div>
+
+<div class="plan" onclick="showPay('6M')">
+6 Months
+<small>39 USDT</small>
+</div>
+
+<div class="plan" onclick="showPay('1Y')">
+1 Year
+<small>70 USDT</small>
+</div>
+</div>
+
+<!-- PAYMENT -->
+<div id="paymentBox"></div>
+
+<div class="footer">
+USDT (TRC20)
+</div>
+
+</div>
+
+<script>
+/* ===== TRIAL ===== */
+function startTrial(){
+const until=new Date(Date.now()+24*60*60*1000);
+localStorage.setItem("ch_trial_until",until.toISOString());
+alert("✅ Free trial activated!");
+location.href="generator.html";
+}
+
+/* ===== PAYMENT ===== */
+const USDT="TCc2WRafYtJS2iJPjCQqWLFSFGSEUo2xoX";
+function showPay(plan){
+const prices={1M:10,3M:19,6M:39,1Y:70};
+const box=document.getElementById("paymentBox");
+box.style.display="block";
+box.innerHTML=`
+<b>Activate ${plan}</b><br><br>
+Amount: <b>${prices[plan]} USDT</b><br>
+Network: TRC20<br><br>
+<div style="background:#000;color:#0f0;padding:10px;border-radius:10px;word-break:break-all">
+${USDT}
+</div>
+<br>
+After payment send TXID + Email
+`;
+}
+</script>
+
+</body>
+</html>
