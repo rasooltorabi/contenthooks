@@ -1,99 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>AI Hooks Generator</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<link rel="stylesheet" href="background.css">
-
-<style>
-body{
-margin:0;
-min-height:100vh;
-font-family:Arial,sans-serif;
-color:#fff;
-}
-
-.container{
-max-width:900px;
-margin:auto;
-padding:80px 20px;
-text-align:center;
-position:relative;
-z-index:2;
-}
-
-h1{
-font-size:44px;
-color:#00ff9c;
-margin-bottom:10px;
-}
-
-.subtitle{
-opacity:.75;
-margin-bottom:35px;
-}
-
-select,button{
-padding:14px 18px;
-border-radius:12px;
-border:none;
-margin:6px;
-font-size:16px;
-}
-
-select{color:#000;min-width:200px}
-
-button{
-background:#00ff9c;
-color:#000;
-font-weight:bold;
-cursor:pointer;
-}
-
-.output{
-margin-top:35px;
-background:#fff;
-color:#000;
-border-radius:16px;
-padding:25px;
-text-align:left;
-line-height:1.7;
-font-size:17px;
-display:none;
-}
-
-.lock{
-margin-top:30px;
-opacity:.85;
-}
-
-.footer{
-margin-top:60px;
-font-size:13px;
-opacity:.6;
-}
-</style>
-</head>
-
-<body>
-<head>
-<title>Generator</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Generator</title>
 <link rel="stylesheet" href="background.css">
 <script src="app.js"></script>
 </head>
-<body onload="checkAccess()">
+<body onload="protect()">
 
 <div class="bg"></div><div class="overlay"></div>
 
 <div class="container">
-<h2>🔥 Hooks Generator</h2>
+<h2>🔥 Hook Generator</h2>
 
 <select>
-<option>Instagram</option>
 <option>TikTok</option>
+<option>Instagram</option>
 <option>YouTube</option>
 </select>
 
@@ -103,125 +24,10 @@ opacity:.6;
 <option>Aggressive</option>
 </select>
 
-<button>Generate Hook</button>
-
-<div class="footer">
-Trial / Paid Access
+<button onclick="alert('AI hook generated 🔥')">
+Generate
+</button>
 </div>
-</div>
-
-</body>
-<!-- BACKGROUND -->
-<div class="bg"></div>
-<div class="overlay"></div>
-
-<div class="container">
-
-<h1>AI Hooks Generator</h1>
-<div class="subtitle">
-Generate scroll-stopping hooks for short-form content
-</div>
-
-<select id="platform">
-<option>Instagram Reels</option>
-<option>TikTok</option>
-<option>YouTube Shorts</option>
-</select>
-
-<select id="tone">
-<option>Curious</option>
-<option>Aggressive</option>
-<option>Emotional</option>
-<option>Luxury</option>
-</select>
-
-<select id="topic">
-<option>Content Creation</option>
-<option>Business</option>
-<option>Motivation</option>
-<option>Crypto</option>
-<option>Lifestyle</option>
-</select>
-
-<br><br>
-<button onclick="generate()">Generate Hooks</button>
-
-<div id="result" class="output"></div>
-<div id="lockMsg" class="lock"></div>
-
-<div class="footer">
-Powered by AI • Pro Access
-</div>
-
-</div>
-
-<script>
-/* ===== CONFIG ===== */
-const OPENAI_API_KEY = "PUT_YOUR_API_KEY_HERE";
-
-/* ===== STORAGE KEYS (ONE STANDARD) ===== */
-const PRO_KEY   = "ch_pro_until";
-const EMAIL_KEY = "ch_pro_email";
-
-/* ===== ACCESS CHECK ===== */
-function hasPro(){
-const until = localStorage.getItem(PRO_KEY);
-return until && new Date(until) > new Date();
-}
-
-if(!hasPro()){
-location.href="activate.html";
-}
-
-/* ===== GENERATE ===== */
-async function generate(){
-const box=document.getElementById("result");
-const lock=document.getElementById("lockMsg");
-
-lock.innerText="⏳ Generating hooks...";
-box.style.display="none";
-
-const prompt = `
-Generate 5 viral hooks.
-Platform: ${platform.value}
-Topic: ${topic.value}
-Tone: ${tone.value}
-Rules:
-- Short
-- Scroll stopping
-- No emojis
-`;
-
-try{
-const res=await fetch("https://api.openai.com/v1/chat/completions",{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+OPENAI_API_KEY
-},
-body:JSON.stringify({
-model:"gpt-4o-mini",
-messages:[{role:"user",content:prompt}],
-temperature:0.9
-})
-});
-
-const data=await res.json();
-
-box.innerHTML=data.choices[0].message.content
-.split("\n")
-.filter(l=>l.trim())
-.map(l=>"👉 "+l.replace(/^\d+\.?/,""))
-.join("<br><br>");
-
-box.style.display="block";
-lock.innerText="";
-
-}catch{
-lock.innerText="❌ Error generating hooks";
-}
-}
-</script>
 
 </body>
 </html>
