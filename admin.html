@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html>
+  <script>
+const ADMIN_PASS = "CHANGE_THIS_123";
+
+const pass = prompt("Admin password:");
+if(pass !== ADMIN_PASS){
+  document.body.innerHTML = "Access denied";
+}
+</script>
 <head>
 <meta charset="UTF-8">
 <title>Admin – Pro Links</title>
