@@ -1,56 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-<script>
-const email = localStorage.getItem("pro_email");
-const until = localStorage.getItem("pro_until");
-
-if(!email || !until || new Date(until) < new Date()){
-  location.href = "activate.html";
-}
-</script>
-  <head>
-    <link rel="stylesheet" href="background.css">
+<head>
 <meta charset="UTF-8">
 <title>AI Hooks Generator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <script>
-const proKey = "pro_until";
-const emailKey = "pro_email";
+<link rel="stylesheet" href="background.css">
 
-function hasPro(){
-  const until = localStorage.getItem(proKey);
-  return until && new Date(until) > new Date();
-}
-
-if(!hasPro()){
-  alert("⛔ Access denied. Please activate Pro.");
-  location.href = "activate.html";
-}
- </script>
-
-  <style>
+<style>
 body{
-  
-  <div class="bg"></div>
-<div class="overlay"></div>
-  
 margin:0;
 min-height:100vh;
 font-family:Arial,sans-serif;
-background:
-linear-gradient(rgba(0,0,0,.9),rgba(0,0,0,.95)),
-url("https://images.unsplash.com/photo-1557683316-973673baf926");
-background-size:cover;
-background-position:center;
 color:#fff;
 }
 
 .container{
 max-width:900px;
 margin:auto;
-padding:60px 20px;
+padding:80px 20px;
 text-align:center;
+position:relative;
+z-index:2;
 }
 
 h1{
@@ -72,19 +43,13 @@ margin:6px;
 font-size:16px;
 }
 
-select{
-min-width:200px;
-}
+select{color:#000;min-width:200px}
 
 button{
 background:#00ff9c;
 color:#000;
 font-weight:bold;
 cursor:pointer;
-}
-
-button:hover{
-opacity:.9;
 }
 
 .output{
@@ -101,7 +66,7 @@ display:none;
 
 .lock{
 margin-top:30px;
-opacity:.8;
+opacity:.85;
 }
 
 .footer{
@@ -114,6 +79,10 @@ opacity:.6;
 
 <body>
 
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="overlay"></div>
+
 <div class="container">
 
 <h1>AI Hooks Generator</h1>
@@ -122,78 +91,62 @@ Generate scroll-stopping hooks for short-form content
 </div>
 
 <select id="platform">
-<option value="Instagram Reels">Instagram Reels</option>
-<option value="TikTok">TikTok</option>
-<option value="YouTube Shorts">YouTube Shorts</option>
+<option>Instagram Reels</option>
+<option>TikTok</option>
+<option>YouTube Shorts</option>
 </select>
 
 <select id="tone">
-<option value="Curious">Curious</option>
-<option value="Aggressive">Aggressive</option>
-<option value="Emotional">Emotional</option>
-<option value="Luxury">Luxury</option>
+<option>Curious</option>
+<option>Aggressive</option>
+<option>Emotional</option>
+<option>Luxury</option>
 </select>
 
 <select id="topic">
-<option value="Content Creation">Content Creation</option>
-<option value="Business">Business</option>
-<option value="Motivation">Motivation</option>
-<option value="Crypto">Crypto</option>
-<option value="Lifestyle">Lifestyle</option>
+<option>Content Creation</option>
+<option>Business</option>
+<option>Motivation</option>
+<option>Crypto</option>
+<option>Lifestyle</option>
 </select>
 
 <br><br>
 <button onclick="generate()">Generate Hooks</button>
 
 <div id="result" class="output"></div>
-
-<div class="lock" id="lockMsg"></div>
+<div id="lockMsg" class="lock"></div>
 
 <div class="footer">
-Powered by AI • Trial & Pro access
+Powered by AI • Pro Access
 </div>
 
 </div>
 
 <script>
-/* ================= CONFIG ================= */
+/* ===== CONFIG ===== */
 const OPENAI_API_KEY = "PUT_YOUR_API_KEY_HERE";
 
-/* ================= STORAGE KEYS ================= */
-const trialKey = "hook_trial_until";
-const proKey   = "hook_pro_until";
+/* ===== STORAGE KEYS (ONE STANDARD) ===== */
+const PRO_KEY   = "ch_pro_until";
+const EMAIL_KEY = "ch_pro_email";
 
-/* ================= ACCESS CHECK ================= */
-function hasAccess(){
-const now = new Date();
-
-const trial = localStorage.getItem(trialKey);
-const pro   = localStorage.getItem(proKey);
-
-if(pro && new Date(pro) > now) return true;
-if(trial && new Date(trial) > now) return true;
-
-return false;
+/* ===== ACCESS CHECK ===== */
+function hasPro(){
+const until = localStorage.getItem(PRO_KEY);
+return until && new Date(until) > new Date();
 }
 
-/* ================= DEMO TRIAL (24H) ================= */
-if(!localStorage.getItem(trialKey)){
-const trialUntil = new Date(Date.now() + 24*60*60*1000);
-localStorage.setItem(trialKey, trialUntil.toISOString());
+if(!hasPro()){
+location.href="activate.html";
 }
 
-/* ================= GENERATE ================= */
+/* ===== GENERATE ===== */
 async function generate(){
-const box = document.getElementById("result");
-const lock = document.getElementById("lockMsg");
+const box=document.getElementById("result");
+const lock=document.getElementById("lockMsg");
 
-if(!hasAccess()){
-lock.innerHTML = "⛔ Your trial has ended. Please upgrade to Pro.";
-box.style.display="none";
-return;
-}
-
-lock.innerHTML = "⏳ Generating hooks...";
+lock.innerText="⏳ Generating hooks...";
 box.style.display="none";
 
 const prompt = `
@@ -201,20 +154,18 @@ Generate 5 viral hooks.
 Platform: ${platform.value}
 Topic: ${topic.value}
 Tone: ${tone.value}
-
 Rules:
 - Short
 - Scroll stopping
-- Modern creator style
 - No emojis
 `;
 
 try{
-const res = await fetch("https://api.openai.com/v1/chat/completions",{
+const res=await fetch("https://api.openai.com/v1/chat/completions",{
 method:"POST",
 headers:{
 "Content-Type":"application/json",
-"Authorization":"Bearer " + OPENAI_API_KEY
+"Authorization":"Bearer "+OPENAI_API_KEY
 },
 body:JSON.stringify({
 model:"gpt-4o-mini",
@@ -223,20 +174,19 @@ temperature:0.9
 })
 });
 
-const data = await res.json();
+const data=await res.json();
 
-const text = data.choices[0].message.content
+box.innerHTML=data.choices[0].message.content
 .split("\n")
 .filter(l=>l.trim())
 .map(l=>"👉 "+l.replace(/^\d+\.?/,""))
 .join("<br><br>");
 
-box.innerHTML = text;
 box.style.display="block";
-lock.innerHTML="";
+lock.innerText="";
 
-}catch(e){
-lock.innerHTML="❌ Error generating hooks.";
+}catch{
+lock.innerText="❌ Error generating hooks";
 }
 }
 </script>
