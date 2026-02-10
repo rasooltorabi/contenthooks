@@ -12,16 +12,28 @@ min-height:100vh;
 font-family:Arial,sans-serif;
 color:#fff;
 background:
-linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.95)),
-url("https://images.unsplash.com/photo-1611162616475-46b635cb6868");
+linear-gradient(rgba(0,0,0,.88),rgba(0,0,0,.95)),
+url("https://images.unsplash.com/photo-1611605698335-3b1569810432");
 background-size:cover;
 background-position:center;
 text-align:center;
 }
 
-.container{max-width:900px;margin:auto;padding:60px 20px}
-h1{font-size:46px;color:#00ff9c}
-.subtitle{opacity:.8;margin-bottom:35px}
+.container{
+max-width:900px;
+margin:auto;
+padding:60px 20px;
+}
+
+h1{
+font-size:46px;
+color:#00ff9c;
+}
+
+.subtitle{
+opacity:.85;
+margin-bottom:35px;
+}
 
 select,button{
 padding:12px 18px;
@@ -31,9 +43,20 @@ margin:6px;
 font-size:16px;
 }
 
-button{background:#00ff9c;font-weight:bold;cursor:pointer}
-.hooks{margin-top:30px;font-size:18px;line-height:1.6}
+button{
+background:#00ff9c;
+color:#000;
+font-weight:bold;
+cursor:pointer;
+}
 
+.hooks{
+margin-top:30px;
+font-size:18px;
+line-height:1.6;
+}
+
+/* PLANS */
 .plans{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
@@ -42,25 +65,33 @@ margin-top:45px;
 }
 
 .plan{
-background:rgba(255,255,255,.06);
-border:1px solid rgba(255,255,255,.1);
+background:#fff;
 border-radius:16px;
 padding:20px;
 }
 
-.plan h3{color:#00ff9c}
+.plan h3,
+.plan p{
+color:#000;
+}
 
+/* PAYMENT */
 .payment-box{
 margin-top:35px;
-background:rgba(0,0,0,.65);
+background:#fff;
 border-radius:14px;
 padding:20px;
 font-size:15px;
 line-height:1.7;
+color:#000;
 display:none;
 }
 
-.footer{margin-top:60px;font-size:13px;opacity:.6}
+.footer{
+margin-top:60px;
+font-size:13px;
+opacity:.6;
+}
 </style>
 </head>
 
@@ -68,7 +99,9 @@ display:none;
 <div class="container">
 
 <h1>AI Hooks Generator</h1>
-<div class="subtitle">Instagram • TikTok • YouTube Shorts</div>
+<div class="subtitle">
+Hooks that stop the scroll • Instagram • TikTok • YouTube
+</div>
 
 <select id="platform">
 <option>Instagram Reels</option>
@@ -92,95 +125,4 @@ display:none;
 <br>
 <button onclick="generateHooks()">Generate Hooks</button>
 
-<div id="output" class="hooks"></div>
-
-<!-- FREE TRIAL -->
-<div style="margin-top:40px">
-<button onclick="startTrial()" style="background:linear-gradient(90deg,#00ff9c,#00cfff);padding:16px 30px;font-size:18px">
-🚀 Start 24-Hour Free Trial
-</button>
-<div style="font-size:13px;opacity:.7;margin-top:8px">
-No credit card • Cancel anytime
-</div>
-</div>
-
-<!-- PLANS -->
-<div class="plans">
-<div class="plan"><h3>1 Month</h3><p>9 USDT</p><button onclick="showPay('1M')">Buy</button></div>
-<div class="plan"><h3>3 Months</h3><p>19 USDT</p><button onclick="showPay('3M')">Buy</button></div>
-<div class="plan"><h3>6 Months</h3><p>49 USDT</p><button onclick="showPay('6M')">Buy</button></div>
-<div class="plan"><h3>1 Year</h3><p>119 USDT</p><button onclick="showPay('1Y')">Buy</button></div>
-</div>
-
-<div id="paymentBox" class="payment-box"></div>
-
-<div class="footer">
-💎 USDT (TRC20) • Contact: rasooltorabi81@gmail.com
-</div>
-</div>
-
-<script>
-const OPENAI_API_KEY="PUT_YOUR_API_KEY_HERE";
-const proKey="ch_pro_until";
-const trialKey="ch_trial_until";
-const deviceKey="ch_device";
-
-if(!localStorage.getItem(deviceKey))
-localStorage.setItem(deviceKey,crypto.randomUUID());
-
-function isPro(){
-const now=new Date();
-const pro=new Date(localStorage.getItem(proKey));
-const trial=new Date(localStorage.getItem(trialKey));
-return (pro>now)||(trial>now);
-}
-
-function startTrial(){
-const until=new Date(Date.now()+24*60*60*1000);
-localStorage.setItem(trialKey,until.toISOString());
-alert("✅ 24-hour free trial activated!");
-location.reload();
-}
-
-async function generateHooks(){
-const out=document.getElementById("output");
-if(!isPro()){
-out.innerHTML="⛔ Unlock Pro to continue.";
-return;
-}
-
-const prompt=`Generate 5 viral hooks.
-Platform:${platform.value}
-Topic:${topic.value}
-Tone:${tone.value}`;
-
-const res=await fetch("https://api.openai.com/v1/chat/completions",{
-method:"POST",
-headers:{
-"Content-Type":"application/json",
-"Authorization":"Bearer "+OPENAI_API_KEY
-},
-body:JSON.stringify({
-model:"gpt-4o-mini",
-messages:[{role:"user",content:prompt}],
-temperature:0.9
-})
-});
-
-const data=await res.json();
-out.innerHTML=data.choices[0].message.content.replace(/^- /gm,"👉 ");
-}
-
-function showPay(plan){
-const box=document.getElementById("paymentBox");
-box.style.display="block";
-box.innerHTML=`
-<b>Activate ${plan} Plan</b><br><br>
-💎 Pay with USDT (TRC20)<br>
-📩 Send TXID + Email + Plan<br><br>
-<b>Contact:</b> rasooltorabi81@gmail.com
-`;
-}
-</script>
-</body>
-</html>
+<div id="output
