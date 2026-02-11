@@ -10,17 +10,12 @@
 
 <div class="container">
 <h2>✅ Access Activated</h2>
-  
-<script>
-let user=JSON.parse(localStorage.getItem("user"));
-user.paid=true;
-localStorage.setItem("user",JSON.stringify(user));
-location.href="dashboard.html";
-</script>
-  
+
 <button onclick="
-localStorage.setItem('paid','true');
-location.href='dashboard.html';
+let u=JSON.parse(localStorage.getItem('user'));
+u.paid=true;
+localStorage.setItem('user',JSON.stringify(u));
+location.href='dashbord.html';
 ">
 Go to Dashboard
 </button>
