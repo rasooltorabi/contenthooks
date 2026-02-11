@@ -1,40 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pricing</title>
+<title>Pricing</title>
+<style>
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+.plan{
+  background:#1e293b;
+  padding:20px;
+  margin:20px auto;
+  width:250px;
+  border-radius:10px;
+}
+button{
+  padding:10px 20px;
+  border:none;
+  background:#22c55e;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
 </head>
 <body>
 
 <h2>Choose Your Plan</h2>
 
-<div>
-  <h3>3 Months</h3>
-  <p>49 USDT</p>
-  <button onclick="selectPlan('3m')">Buy</button>
+<div class="plan">
+<h3>3 Months</h3>
+<p>49 USDT</p>
+<button onclick="selectPlan('3m')">Buy</button>
 </div>
 
-<div>
-  <h3>6 Months</h3>
-  <p>99 USDT</p>
-  <button onclick="selectPlan('6m')">Buy</button>
+<div class="plan">
+<h3>6 Months</h3>
+<p>99 USDT</p>
+<button onclick="selectPlan('6m')">Buy</button>
 </div>
 
-<div>
-  <h3>1 Year</h3>
-  <p>199 USDT</p>
-  <button onclick="selectPlan('1y')">Buy</button>
+<div class="plan">
+<h3>1 Year</h3>
+<p>199 USDT</p>
+<button onclick="selectPlan('1y')">Buy</button>
 </div>
 
-<div>
-  <h3>2 Years</h3>
-  <p>299 USDT</p>
-  <button onclick="selectPlan('2y')">Buy</button>
+<div class="plan">
+<h3>2 Years</h3>
+<p>299 USDT</p>
+<button onclick="selectPlan('2y')">Buy</button>
 </div>
 
 <script>
-function selectPlan(plan) {
+function selectPlan(plan){
   localStorage.setItem("selectedPlan", plan);
-  window.location.href = "payment.html";
+  window.location.href="payment.html";
 }
 </script>
 
