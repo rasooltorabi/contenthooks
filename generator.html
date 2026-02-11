@@ -5,14 +5,27 @@
 </head>
 <body>
 
-<h2>Generate Viral Hooks</h2>
+<h2>AI Generator</h2>
 
-<input type="text" id="topic" placeholder="Enter topic..." />
-<button onclick="generate()">Generate</button>
+<div id="locked" style="display:none;">
+  <h3>Your account is not active.</h3>
+  <a href="pricing.html">Upgrade Now</a>
+</div>
 
-<pre id="result"></pre>
+<div id="app">
+  <input type="text" id="topic" placeholder="Enter topic..." />
+  <button onclick="generate()">Generate</button>
+  <pre id="result"></pre>
+</div>
 
 <script>
+const isActive = localStorage.getItem("isActive");
+
+if (!isActive) {
+  document.getElementById("locked").style.display = "block";
+  document.getElementById("app").style.display = "none";
+}
+
 async function generate() {
   const topic = document.getElementById("topic").value;
 
@@ -25,7 +38,7 @@ async function generate() {
   });
 
   const data = await res.json();
-  document.getElementById("result").innerText = data.result || data.error;
+  document.getElementById("result").innerText = data.result;
 }
 </script>
 
