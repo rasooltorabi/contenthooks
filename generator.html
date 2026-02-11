@@ -1,33 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Generator</title>
+<title>AI Hook Generator</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="background.css">
 <script src="app.js"></script>
 </head>
+
 <body onload="protect()">
 
 <div class="bg"></div><div class="overlay"></div>
 
 <div class="container">
-<h2>🔥 Hook Generator</h2>
+<h2>🔥 AI Hook Generator</h2>
 
-<select>
-<option>TikTok</option>
-<option>Instagram</option>
-<option>YouTube</option>
+<select id="platform">
+  <option>TikTok</option>
+  <option>Instagram</option>
+  <option>YouTube</option>
 </select>
 
-<select>
-<option>Curiosity</option>
-<option>Emotional</option>
-<option>Aggressive</option>
+<select id="tone">
+  <option>Curiosity</option>
+  <option>Emotional</option>
+  <option>Aggressive</option>
+  <option>Luxury</option>
+  <option>Dark</option>
 </select>
 
-<button onclick="alert('AI hook generated 🔥')">
-Generate
-</button>
+<input id="topic" placeholder="Topic (e.g. money, relationships, AI)">
+
+<button onclick="run()">Generate Hooks</button>
+
+<div id="result" class="card" style="display:none;white-space:pre-line"></div>
 </div>
+
+<script>
+async function run(){
+  const platform = document.getElementById("platform").value;
+  const tone = document.getElementById("tone").value;
+  const topic = document.getElementById("topic").value;
+  const result = document.getElementById("result");
+
+  if(!topic){
+    alert("Enter topic");
+    return;
+  }
+
+  result.style.display="block";
+  result.innerText="⏳ Generating...";
+
+  try{
+    const hooks = await generateHook(platform, tone, topic);
+    result.innerText = hooks;
+  }catch(e){
+    result.innerText="❌ Error generating hooks";
+  }
+}
+</script>
 
 </body>
 </html>
