@@ -1,19 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Pricing</title>
-<link rel="stylesheet" href="background.css">
+  <title>Pricing</title>
 </head>
 <body>
 
-<div class="bg"></div><div class="overlay"></div>
+<h2>Choose Your Plan</h2>
 
-<div class="container">
-<h2>Upgrade Plan</h2>
-
-<button onclick="location.href='payment.html'">Monthly – $10</button>
-<button onclick="location.href='payment.html'">Yearly – $70</button>
+<div>
+  <h3>3 Months</h3>
+  <p>49 USDT</p>
+  <button onclick="selectPlan('3m')">Buy</button>
 </div>
+
+<div>
+  <h3>6 Months</h3>
+  <p>99 USDT</p>
+  <button onclick="selectPlan('6m')">Buy</button>
+</div>
+
+<div>
+  <h3>1 Year</h3>
+  <p>199 USDT</p>
+  <button onclick="selectPlan('1y')">Buy</button>
+</div>
+
+<div>
+  <h3>2 Years</h3>
+  <p>299 USDT</p>
+  <button onclick="selectPlan('2y')">Buy</button>
+</div>
+
+<script>
+function selectPlan(plan) {
+  localStorage.setItem("selectedPlan", plan);
+  window.location.href = "payment.html";
+}
+</script>
 
 </body>
 </html>
