@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>AI Hook Generator</title>
+<title>AI Generator</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" href="background.css">
 <script src="app.js"></script>
@@ -15,46 +15,44 @@
 <h2>🔥 AI Hook Generator</h2>
 
 <select id="platform">
-  <option>TikTok</option>
-  <option>Instagram</option>
-  <option>YouTube</option>
+<option>TikTok</option>
+<option>Instagram</option>
+<option>YouTube</option>
 </select>
 
 <select id="tone">
-  <option>Curiosity</option>
-  <option>Emotional</option>
-  <option>Aggressive</option>
-  <option>Luxury</option>
-  <option>Dark</option>
+<option>Curiosity</option>
+<option>Emotional</option>
+<option>Aggressive</option>
+<option>Luxury</option>
+<option>Dark</option>
 </select>
 
-<input id="topic" placeholder="Topic (e.g. money, relationships, AI)">
+<input id="topic" placeholder="Topic (money, dating, AI…)">
 
-<button onclick="run()">Generate Hooks</button>
+<button onclick="run()">Generate</button>
 
 <div id="result" class="card" style="display:none;white-space:pre-line"></div>
 </div>
 
 <script>
 async function run(){
-  const platform = document.getElementById("platform").value;
-  const tone = document.getElementById("tone").value;
-  const topic = document.getElementById("topic").value;
-  const result = document.getElementById("result");
+  const topic=document.getElementById("topic").value;
+  if(!topic) return alert("Enter topic");
 
-  if(!topic){
-    alert("Enter topic");
-    return;
-  }
-
+  const result=document.getElementById("result");
   result.style.display="block";
-  result.innerText="⏳ Generating...";
+  result.innerText="⏳ Thinking...";
 
   try{
-    const hooks = await generateHook(platform, tone, topic);
-    result.innerText = hooks;
+    const text=await generateHook(
+      platform.value,
+      tone.value,
+      topic
+    );
+    result.innerText=text;
   }catch(e){
-    result.innerText="❌ Error generating hooks";
+    result.innerText="❌ Daily limit reached. Upgrade.";
   }
 }
 </script>
