@@ -3,29 +3,29 @@
 <head>
 <title>Free Trial</title>
 <link rel="stylesheet" href="background.css">
-<script src="app.js"></script>
 </head>
 <body>
 
 <div class="bg"></div><div class="overlay"></div>
 
 <div class="container">
-<h2>🎁 24 Hour Free Trial</h2>
+<h2>🎁 24h Free Trial</h2>
 
 <div class="card">
-✔ Full Generator<br>
-✔ No Card Required<br>
-✔ Auto Lock
+✔ Full access<br>
+✔ No credit card<br>
+✔ Auto lock
 </div>
 
-<button onclick="activateTrial()">Activate Trial</button>
+<button onclick="activate()">Activate Trial</button>
 </div>
 
 <script>
-function activateTrial(){
-const until=Date.now()+86400000;
-localStorage.setItem("trial_until",until);
-location.href="dashboard.html";
+function activate(){
+let u=JSON.parse(localStorage.getItem("user"));
+u.trial=Date.now()+86400000;
+localStorage.setItem("user",JSON.stringify(u));
+location.href="dashbord.html";
 }
 </script>
 
