@@ -1,61 +1,20 @@
 <!DOCTYPE html>
 <html>
-  <h2>Admin Panel</h2>
-<input id="email">
-<button onclick="unlock()">Unlock User</button>
-
-<script>
-function unlock(){
-alert("Manual unlock via DB / KV (next phase)");
-}
-</script>
-  
-  <script>
-const ADMIN_PASS = "CHANGE_THIS_123";
-
-const pass = prompt("Admin password:");
-if(pass !== ADMIN_PASS){
-  document.body.innerHTML = "Access denied";
-}
-</script>
 <head>
+<title>Admin</title>
 <meta charset="UTF-8">
-<title>Admin – Pro Links</title>
-<style>
-body{background:#000;color:#fff;font-family:Arial;padding:40px}
-input,button{padding:10px;margin:6px}
-button{background:#00ff9c;font-weight:bold}
-</style>
 </head>
-
-<body>
-
-<h2>Generate Pro Link</h2>
-
-<input id="email" placeholder="user gmail">
-<select id="plan">
-<option value="30">1 Month</option>
-<option value="90">3 Months</option>
-<option value="180">6 Months</option>
-<option value="365">1 Year</option>
-</select>
-
-<button onclick="gen()">Generate</button>
-
-<p id="out"></p>
+<body style="background:#000;color:#fff;font-family:Arial;padding:40px">
 
 <script>
-function gen(){
-const email = document.getElementById("email").value.trim().toLowerCase();
-const days = document.getElementById("plan").value;
-
-const until = new Date(Date.now() + days*24*60*60*1000).toISOString();
-
-const link = `activate.html?email=${email}&until=${until}`;
-
-out.innerText = location.origin + "/" + link;
+const pass=prompt("Admin password");
+if(pass!=="CHANGE_THIS"){
+document.body.innerHTML="Access denied";
 }
 </script>
+
+<h2>Admin Panel</h2>
+<p>Manual unlock (next phase)</p>
 
 </body>
 </html>
