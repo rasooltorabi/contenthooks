@@ -1,25 +1,40 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pay with USDT</title>
+<title>Pay with USDT</title>
+<style>
+body{
+  background:#0f172a;
+  color:white;
+  font-family:Arial;
+  text-align:center;
+}
+.box{
+  margin-top:100px;
+}
+button{
+  padding:10px 20px;
+  background:#f59e0b;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+</style>
 </head>
 <body>
 
+<div class="box">
 <h2>Pay with USDT (TRC20)</h2>
-
 <p>Send payment to this wallet:</p>
+<h3>WALLET_ADDRESS</h3>
+<p>After payment send screenshot to your@email.com</p>
 
-<h3 id="wallet">YOUR_USDT_WALLET_ADDRESS</h3>
-
-<p>After payment, send screenshot to:</p>
-<p>your@email.com</p>
-
-<button onclick="confirmPayment()">I Have Paid</button>
+<button onclick="confirmPay()">I Have Paid</button>
+</div>
 
 <script>
-function confirmPayment() {
-  localStorage.setItem("paymentPending", "true");
-  alert("Your payment is under review. You will be activated after admin approval.");
+function confirmPay(){
+  alert("Payment received. Wait for activation.");
 }
 </script>
 
