@@ -1,12 +1,99 @@
-<input id="email" placeholder="email@gmail.com">
-<button onclick="login()">Continue</button>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login - ContentHooks</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body {
+      background:#0f0f0f;
+      color:white;
+      font-family:Arial;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      height:100vh;
+    }
+    .box {
+      background:#1a1a1a;
+      padding:40px;
+      border-radius:12px;
+      text-align:center;
+      width:300px;
+    }
+    input {
+      width:100%;
+      padding:10px;
+      margin:10px 0;
+    }
+    button {
+      padding:10px;
+      width:100%;
+      background:#8a2be2;
+      border:none;
+      color:white;
+      cursor:pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Login / Register</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="signUp()">Sign Up</button>
+  <button onclick="signIn()">Login</button>
+</div>
 
 <script>
-async function login(){
-const email=document.getElementById("email").value;
-const res=await fetch("/api/login",{method:"POST",body:JSON.stringify({email})});
-const user=await res.json();
-localStorage.setItem("user",JSON.stringify(user));
-location.href="dashboard.html";
+const supabase = window.supabase.createClient(
+  "https://ahgbyhfkympjbfcersjr.supabase.co",
+  "sb_publishable_JxKNAiV9cp87yREbtVpI6w_lQ3fzpWZ"
+);
+
+async function signUp() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  // ساخت پروفایل
+  await supabase.from("profiles").insert([
+    {
+      id: data.user.id,
+      email: data.user.email
+    }
+  ]);
+
+  alert("Account created!");
+  window.location.href = "dashboard.html";
+}
+
+async function signIn() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if(error){
+    alert(error.message);
+    return;
+  }
+
+  window.location.href = "dashboard.html";
 }
 </script>
+
+</body>
+</html>
